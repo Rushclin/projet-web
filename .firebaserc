@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "hanniel-app"
+  },
+  "targets": {
+    "hanniel-app": {
+      "hosting": {
+        "webpharmacy": [
+          "web-pharmacy"
+        ]
+      }
+    }
   }
 }
