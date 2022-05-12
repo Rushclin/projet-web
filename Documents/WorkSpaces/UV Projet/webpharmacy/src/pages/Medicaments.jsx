@@ -1,6 +1,7 @@
 import { BlockRounded, CheckCircleRounded } from "@mui/icons-material";
 import { Button, Card, Checkbox, Container, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Iconify from "../components/Iconify";
 import Page from '../components/Page';
 import Scrollbar from "../components/Scrollbar";
@@ -24,13 +25,15 @@ const Medicaments = (props) => {
 
     const ref = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
+    // Navigation 
+    const navigate = useNavigate()
 
     return (
         <Page title="Medicaments">
             <Container>
                 <Stack direction='row' alignItems='center' justifyContent='space-between' mb={5}>
-                    <Typography variant='h4'>Medicaments</Typography>
-                    <Button variant='contained' startIcon={<Iconify icon="eva:plus-fill" />}>Nouveau</Button>
+                    <Typography variant='h5'>Medicaments</Typography>
+                    <Button variant='contained' onClick={() => navigate('/medicaments/create')} startIcon={<Iconify icon="eva:plus-fill" />}>Nouveau</Button>
                 </Stack>
 
                 <Card>
