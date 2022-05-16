@@ -10,6 +10,29 @@
           "destination": "/index.html"
         }
       ]
+    },
+    {
+      "site": "web-administration",
+      "public": "webadmin/build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "site": "web-hospital",
+      "public": "webhopital/build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
+    
   ]
 }
