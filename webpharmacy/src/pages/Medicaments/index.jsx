@@ -11,27 +11,6 @@ import StackComponent from "../components/StackComponent";
 
 export default function ListeMedicament() {
     // HOOKS
-    const navigation = useNavigate();
-    // Prototype de la creation d'un medicament
-    const createMedicament = (
-        id,
-        nom,
-        dose,
-        laboratoire,
-        statut,
-        prix,
-        poids
-    ) => {
-        return {
-            id,
-            nom,
-            dose,
-            laboratoire,
-            statut,
-            prix,
-            poids,
-        };
-    };
 
     // En utilisant le MUIDatatable
     // DEBUT
