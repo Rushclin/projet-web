@@ -1,7 +1,7 @@
 import { VaccinesOutlined } from "@mui/icons-material"
 import { Avatar, Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Page from "../../components/Page"
 
 const Copyright = (props) => {
@@ -19,8 +19,12 @@ const Copyright = (props) => {
 
 const LoginPage = () => {
 
+    //HOOKS 
+    const navigate = useNavigate()
+
     const handleSubmit = (e) => {
         e.preventDefault()
+        navigate("/dashboard")
         const data = new FormData(e.currentTarget)
         console.log({
             email: data.get('email')

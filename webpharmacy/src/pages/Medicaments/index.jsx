@@ -1,5 +1,7 @@
 import MUIDataTable from "mui-datatables";
 import {
+    Button,
+    ButtonGroup,
     Card,
     Container,
 } from "@mui/material";
@@ -8,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import Scrollbar from "../../components/Scrollbar";
 import StackComponent from "../components/StackComponent";
+import { DeleteRounded, Edit } from "@mui/icons-material";
 
 export default function ListeMedicament() {
     // HOOKS
+    const navigate = useNavigate()
 
     // En utilisant le MUIDatatable
     // DEBUT
@@ -71,10 +75,38 @@ export default function ListeMedicament() {
                 sort: false,
             }
         },
+        {
+            name: "actions",
+            label: "Actions",
+            options: {
+                empty: true,
+                customBodyRenderLite: (dataIndex, id) => {
+                    return (
+                        <>
+                            <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                                <Button size="small" variant='contained' onClick={() => { navigate("/medicament/update") }}>
+                                    <Edit />
+                                </Button>
+                                <Button size="small" variant='contained' color="error" onClick={() => window.alert(`"Supprimer" ${dataIndex}`)}>
+                                    <DeleteRounded />
+                                </Button>
+                            </ButtonGroup>
+                        </>
+                    );
+                }
+            }
+        }
     ];
 
     const data = [
         { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
+        { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
+        { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
+        { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
+        { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
+        { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
+        { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
+        { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
     ];
 
     const options = {
@@ -96,7 +128,7 @@ export default function ListeMedicament() {
                 <Card>
                     <Scrollbar>
                         <MUIDataTable
-                            title={"Employee List"}
+                            title={"Liste des medicaments"}
                             data={data}
                             columns={columns}
                             options={options}

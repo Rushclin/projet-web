@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 // @mui
 import { alpha } from "@mui/material/styles";
 import {
@@ -22,7 +22,7 @@ const MENU_OPTIONS = [
   {
     label: "Acceuil",
     icon: "eva:home-fill",
-    linkTo: "/app",
+    linkTo: "/dashboard",
   },
   {
     label: "Profil",
@@ -39,6 +39,8 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const navigate = useNavigate();
+
   const anchorRef = useRef(null);
 
   const [open, setOpen] = useState(null);
@@ -48,6 +50,7 @@ export default function AccountPopover() {
   };
 
   const handleClose = () => {
+    /* navigate("/"); */
     setOpen(null);
   };
 
