@@ -12,8 +12,8 @@ const navConfig = [
     icon: getIcon("eva:pie-chart-2-fill"),
   },
   {
-    title: "Mes medicaments",
-    path: "/medicaments",
+    title: "Gerer medicaments",
+    path: "/medicament",
     icon: getIcon("fontisto:drug-pack"),
   },
 ];

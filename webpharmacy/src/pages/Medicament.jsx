@@ -28,6 +28,12 @@ const Medicaments = (props) => {
     // Navigation 
     const navigate = useNavigate()
 
+    const test = (nom, prenom) => {
+        return ("Je m'appelle " + nom + " avec " + prenom)
+    }
+
+    console.log(test("kuyufrk", "jkwu"))
+
     return (
         <Page title="Medicaments">
             <Container>
