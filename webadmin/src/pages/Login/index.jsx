@@ -1,8 +1,17 @@
 import { VaccinesOutlined } from "@mui/icons-material"
-import { Avatar, Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography } from "@mui/material"
-import { Box } from "@mui/system"
+import { Avatar } from '@mui/material'
+import { Paper } from '@mui/material'
+import { TextField } from "@mui/material"
+import { Checkbox } from "@mui/material"
+import { Button } from "@mui/material"
+import { FormControlLabel } from "@mui/material"
+import { Typography } from "@mui/material"
+import { Grid } from '@mui/material'
+import { Box } from '@mui/system'
+import React from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import Page from "../../components/Page"
+import Page from '../../components/Page'
+
 
 const Copyright = (props) => {
     return (
@@ -17,7 +26,8 @@ const Copyright = (props) => {
     );
 }
 
-const LoginPage = () => {
+
+export default function LoginPage() {
 
     //HOOKS 
     const navigate = useNavigate()
@@ -32,8 +42,8 @@ const LoginPage = () => {
     }
 
     return (
-        <Page title="Login page">
-            <Grid container component="main" sx={{ height: '100vh ' }}>
+        <Page title="Login  page">
+            <Grid container component="main" sx={{ height: '100vh' }}>
                 <Grid
                     item
                     xs={false}
@@ -48,25 +58,22 @@ const LoginPage = () => {
                         backgroundPosition: 'center',
                     }}
                 />
-                <Grid item xs={12} sm={8} md={6} component={Paper} square>
-                    <Box
-                        sx={{
-                            my: 8,
 
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
+                <Grid item xs={12} sm={8} md={6} component={Paper} square>
+                    <Box sx={{
+                        my: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                    }}>
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <VaccinesOutlined />
                         </Avatar>
 
-                        <Typography component="h1" variant="h5" style={{ fontWeight: '200', textTransform: 'uppercase' }}>
-                            Connexion pour pharmacien
+                        <Typography variant='h5' component='h1' style={{ textTransform: 'uppercase' }}>
+                            Connexion pour administrateur
                         </Typography>
-
-                        <Box component="form" onSubmit={handleSubmit} px={3} style={{ width: '90%' }}>
+                        <Box component="form" onSubmit={handleSubmit} style={{ width: '90%' }}>
                             <TextField
                                 margin="normal"
                                 required
@@ -75,19 +82,16 @@ const LoginPage = () => {
                                 id="email"
                                 label="Entrez votre email"
                                 name="email"
-                                autoComplete="email"
                                 autoFocus
                             />
-
                             <TextField
                                 margin="normal"
                                 required
+                                type="password"
                                 fullWidth
                                 id="password"
                                 label="Entrez votre mot de passe"
                                 name="password"
-                                autoComplete="password"
-                                type="password"
                             />
                             <FormControlLabel
                                 control={<Checkbox value="souvenir" color="primary" />}
@@ -101,7 +105,6 @@ const LoginPage = () => {
                             >
                                 SE CONNECTER
                             </Button>
-
                             <Grid container>
                                 <Grid item xs>
                                     <Link to="" variant="body2">
@@ -118,5 +121,3 @@ const LoginPage = () => {
         </Page>
     )
 }
-
-export default LoginPage
