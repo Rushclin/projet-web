@@ -4,8 +4,9 @@ import DashboardApp from "./pages/DashboardApp";
 import LoginPage from "./pages/Login";
 import Medicaments from "./pages/Medicaments";
 import NouveauMedicament from "./pages/NouveauMedicament";
-
-// ----------------------------------------------------------------------
+import ListePharmacie from "./pages/Pharmacies";
+import NouvellePharmacie from "./pages/Pharmacies/create";
+import UpdatePharmacie from "./pages/Pharmacies/update";
 
 export default function Router() {
   return useRoutes([
@@ -16,6 +17,9 @@ export default function Router() {
         { path: "dashboard", element: <DashboardApp /> },
         { path: "medicaments", element: <Medicaments /> },
         { path: "medicaments/create", element: <NouveauMedicament /> },
+        { path: "pharmacies", element: <ListePharmacie /> },
+        { path: "pharmacies/create", element: <NouvellePharmacie /> },
+        { path: "pharmacies/update", element: <UpdatePharmacie /> },
       ],
     },
     {
