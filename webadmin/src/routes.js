@@ -1,6 +1,9 @@
 import { useRoutes } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
 import DashboardApp from "./pages/DashboardApp";
+import ListeHopitaux from "./pages/Hopital";
+import CreerHopital from "./pages/Hopital/create";
+import UpdateHopital from "./pages/Hopital/update";
 import LoginPage from "./pages/Login";
 import Medicaments from "./pages/Medicaments";
 import NouveauMedicament from "./pages/NouveauMedicament";
@@ -17,9 +20,14 @@ export default function Router() {
         { path: "dashboard", element: <DashboardApp /> },
         { path: "medicaments", element: <Medicaments /> },
         { path: "medicaments/create", element: <NouveauMedicament /> },
+        // Pharmacies
         { path: "pharmacies", element: <ListePharmacie /> },
         { path: "pharmacies/create", element: <NouvellePharmacie /> },
         { path: "pharmacies/update", element: <UpdatePharmacie /> },
+        // Hopital
+        { path: "hopital", element: <ListeHopitaux /> },
+        { path: "hopital/create", element: <CreerHopital /> },
+        { path: "hopital/update", element: <UpdateHopital /> },
       ],
     },
     {
