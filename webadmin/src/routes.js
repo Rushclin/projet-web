@@ -7,6 +7,8 @@ import UpdateHopital from "./pages/Hopital/update";
 import LoginPage from "./pages/Login";
 import Medicaments from "./pages/Medicaments";
 import NouveauMedicament from "./pages/NouveauMedicament";
+import ListePatient from "./pages/Patient";
+import ShowPatient from "./pages/Patient/show";
 import ListePharmacie from "./pages/Pharmacies";
 import NouvellePharmacie from "./pages/Pharmacies/create";
 import UpdatePharmacie from "./pages/Pharmacies/update";
@@ -28,6 +30,10 @@ export default function Router() {
         { path: "hopital", element: <ListeHopitaux /> },
         { path: "hopital/create", element: <CreerHopital /> },
         { path: "hopital/update", element: <UpdateHopital /> },
+
+        // Patient
+        { path: "patients", element: <ListePatient /> },
+        { path: "patients/show", element: <ShowPatient /> },
       ],
     },
     {
