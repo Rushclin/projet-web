@@ -1,5 +1,7 @@
 import { useRoutes } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
+import ListeCampagne from "./pages/Campagne";
+import ShowCampagne from "./pages/Campagne/show";
 import DashboardApp from "./pages/DashboardApp";
 import ListeHopitaux from "./pages/Hopital";
 import CreerHopital from "./pages/Hopital/create";
@@ -34,6 +36,10 @@ export default function Router() {
         // Patient
         { path: "patients", element: <ListePatient /> },
         { path: "patients/show", element: <ShowPatient /> },
+
+        // Campagne
+        { path: "campagnes", element: <ListeCampagne /> },
+        { path: "campagnes/show", element: <ShowCampagne /> },
       ],
     },
     {

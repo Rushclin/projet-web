@@ -31,6 +31,12 @@ const navConfig = [
     path: "/patients",
     icon: getIcon("fontisto:drug-pack"),
   },
+
+  {
+    title: "Campagnes",
+    path: "/campagnes",
+    icon: getIcon("fontisto:drug-pack"),
+  },
 ];
 
 export default navConfig;
