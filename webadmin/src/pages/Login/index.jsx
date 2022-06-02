@@ -1,5 +1,5 @@
 import { VaccinesOutlined } from "@mui/icons-material"
-import { Avatar } from '@mui/material'
+import { Alert, Avatar, Snackbar } from '@mui/material'
 import { Paper } from '@mui/material'
 import { TextField } from "@mui/material"
 import { Checkbox } from "@mui/material"
@@ -8,9 +8,10 @@ import { FormControlLabel } from "@mui/material"
 import { Typography } from "@mui/material"
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import Page from '../../components/Page'
+import axios from 'axios';
 
 
 const Copyright = (props) => {
@@ -30,15 +31,36 @@ const Copyright = (props) => {
 export default function LoginPage() {
 
     //HOOKS 
+    const [user, setUser] = useState({ email: "", password: "" })
+    const [open, setOpen] = useState(false)
     const navigate = useNavigate()
+
+    const vertical = 'bottom';
+    const horizontal = 'center';
+
+
+    const handleChange = (e) => {
+        setUser(prevState => ({ ...prevState, [e.target.name]: e.target.value }))
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        navigate("/dashboard")
-        const data = new FormData(e.currentTarget)
+        axios.post('http://hanniel-api.herokuapp.com/hanniel/admin/signIn', user).then((response) => {
+            console.log(response.data)
+            if (response.status && response.status == 200) {
+                navigate("/dashboard")
+                setOpen(true)
+            } else {
+                setOpen(true)
+            }
+        }).catch(((error) => {
+            console.log(error)
+        }))
+        //navigate("/dashboard")
+        /* const data = new FormData(e.currentTarget)
         console.log({
             email: data.get('email')
-        })
+        }) */
     }
 
     return (
@@ -83,6 +105,8 @@ export default function LoginPage() {
                                 label="Entrez votre email"
                                 name="email"
                                 autoFocus
+                                value={user.email}
+                                onChange={handleChange}
                             />
                             <TextField
                                 margin="normal"
@@ -92,6 +116,8 @@ export default function LoginPage() {
                                 id="password"
                                 label="Entrez votre mot de passe"
                                 name="password"
+                                value={user.password}
+                                onChange={handleChange}
                             />
                             <FormControlLabel
                                 control={<Checkbox value="souvenir" color="primary" />}
@@ -118,6 +144,20 @@ export default function LoginPage() {
                     </Box>
                 </Grid>
             </Grid>
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={open}
+                autoHideDuration={2000}
+                onClose={() => {
+                    setTimeout(() => {
+                        setOpen(false);
+                    }, 2000);
+                }}
+            >
+                <Alert severity='success' variant='filled' sx={{ width: '100%' }}>
+                    email or password invalid'
+                </Alert>
+            </Snackbar>
         </Page>
     )
 }
