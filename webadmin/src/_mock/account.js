@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 const account = {
   displayName: "Takam Rushclin",
   email: "takamrushclin@gmail.com",

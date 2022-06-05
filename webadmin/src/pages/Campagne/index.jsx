@@ -3,71 +3,70 @@ import { useNavigate } from "react-router-dom"
 import Page from "../../components/Page"
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import MUIDataTable from "mui-datatables";
+import axios from 'axios';
+import { useEffect, useState } from "react";
+import { useAuthContext } from "../../context/userContext";
 
 const ListeCampagne = () => {
     const navigate = useNavigate()
+    const { user } = useAuthContext();
 
+    useEffect(() => {
+        getAllCampagne()
+        //getOneHopital()
+    }, [])
+
+
+    const [campagnes, setCampagne] = useState([])
+    const [hopital, setHopital] = useState({})
+
+    // Recuperer toutes les campagnes
+    const getAllCampagne = () => {
+        let campagnes = [];
+        axios.get("https://hanniel-api.herokuapp.com/admin/campaign", {
+            userId: user.userId,
+            headers: { Authorization: `Bearer ${user.token}` }
+        }).then((response) => {
+            console.log(response.data)
+            campagnes = [...response.data.message]
+            setCampagne([...campagnes])
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    // Recuperer un hoptal avec son ID
+    const getOneHopital = (id) => {
+        axios.get("https://hanniel-api.herokuapp.com/hanniel/admin/hospital/" + id, {
+            userId: user.userId,
+            headers: { Authorization: `Bearer ${user.token}` }
+        }).then((response) => {
+            setHopital(response.data.message)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
     const columns = [
-        {
-            name: "id",
-            label: "ID",
-            option: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "nom",
-            label: "Nom",
-            option: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "date_deb",
-            label: "Date debut",
-            option: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "date_fin",
-            label: "Date de fin",
-            option: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "hopital",
-            label: "Hopital",
-            option: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "responsable",
-            label: "Responsables",
-            option: {
-                filter: true,
-                sort: true,
-            }
-        },
+        { name: "id", label: "ID", option: { filter: true, sort: true, } },
+        { name: "name", label: "Nom", option: { filter: true, sort: true, } },
+        { name: "dateBegin", label: "Date debut", option: { filter: true, sort: true, } },
+        { name: "dateEnd", label: "Date de fin", option: { filter: true, sort: true, } },
+        { name: "hospitalId", label: "Hopital", option: { filter: true, sort: true, } },
+        { name: "responsable", label: "Responsables", option: { filter: true, sort: true, } },
         {
             name: "actions",
             label: "Actions",
             options: {
-                customBodyRenderLite: (index, id) => {
+                customBodyRenderLite: (dataIndex, rowIndex) => {
                     return (
                         <>
                             <ButtonGroup variants="contained">
                                 <Button
                                     variant="contained"
                                     size="small"
-                                    onClick={() => navigate("/campagnes/show")}
+                                    onClick={(e) => {
+                                        navigate("/campagnes/show/", { state: { id: campagnes[dataIndex].id } })
+                                    }}
                                 >
                                     <VisibilityIcon />
                                 </Button>
@@ -83,16 +82,6 @@ const ListeCampagne = () => {
         filterType: "checkbox"
     }
 
-    const data = [
-        {
-            id: "0",
-            nom: "Vaccination pour tous",
-            date_deb: "01/ 02/ 2022",
-            date_fin: "01/ 03/ 2022",
-            hopital: "Hopital de Distric",
-            responsable: "Dr Amadine"
-        }
-    ]
     return (
         <Page title="Liste campagne">
             <Container>
@@ -102,10 +91,11 @@ const ListeCampagne = () => {
                     </Typography>
                 </Stack>
 
+
                 <Card>
                     <MUIDataTable
                         title={"Liste des campagnes"}
-                        data={data}
+                        data={campagnes}
                         columns={columns}
                         options={options}
                     />

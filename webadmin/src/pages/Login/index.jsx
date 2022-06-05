@@ -12,6 +12,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import Page from '../../components/Page'
 import axios from 'axios';
+import { useAuthContext } from "../../context/userContext"
 
 
 const Copyright = (props) => {
@@ -32,12 +33,10 @@ export default function LoginPage() {
 
     //HOOKS 
     const [user, setUser] = useState({ email: "", password: "" })
-    const [open, setOpen] = useState(false)
+    const [message, setMessage] = useState("")
+    const [error, setError] = useState(false)
     const navigate = useNavigate()
-
-    const vertical = 'bottom';
-    const horizontal = 'center';
-
+    const AuthContext = useAuthContext();
 
     const handleChange = (e) => {
         setUser(prevState => ({ ...prevState, [e.target.name]: e.target.value }))
@@ -45,16 +44,20 @@ export default function LoginPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://hanniel-api.herokuapp.com/hanniel/admin/signIn', user).then((response) => {
-            console.log(response.data)
-            if (response.status && response.status == 200) {
+        axios.post('https://hanniel-api.herokuapp.com/admin/signIn', user).then((response) => {
+            //console.log(response.data)
+            if (response.status && response.status === 200) {
+                window.sessionStorage.setItem('user', JSON.stringify(response.data));
                 navigate("/dashboard")
-                setOpen(true)
+                AuthContext.update();
             } else {
-                setOpen(true)
+                setMessage("Connexion non reussit, veuillez verifier votre login ou mot de passe")
+                setError(true)
             }
         }).catch(((error) => {
             console.log(error)
+            setMessage("Erreur de connexion, veuillez verifier vos identifiants")
+            setError(true)
         }))
         //navigate("/dashboard")
         /* const data = new FormData(e.currentTarget)
@@ -95,6 +98,9 @@ export default function LoginPage() {
                         <Typography variant='h5' component='h1' style={{ textTransform: 'uppercase' }}>
                             Connexion pour administrateur
                         </Typography>
+                        {
+                            error && <Alert severity="error">{message}</Alert>
+                        }
                         <Box component="form" onSubmit={handleSubmit} style={{ width: '90%' }}>
                             <TextField
                                 margin="normal"
@@ -144,20 +150,6 @@ export default function LoginPage() {
                     </Box>
                 </Grid>
             </Grid>
-            <Snackbar
-                anchorOrigin={{ vertical, horizontal }}
-                open={open}
-                autoHideDuration={2000}
-                onClose={() => {
-                    setTimeout(() => {
-                        setOpen(false);
-                    }, 2000);
-                }}
-            >
-                <Alert severity='success' variant='filled' sx={{ width: '100%' }}>
-                    email or password invalid'
-                </Alert>
-            </Snackbar>
         </Page>
     )
 }
