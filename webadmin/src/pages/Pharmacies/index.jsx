@@ -1,60 +1,71 @@
 import MUIDataTable from "mui-datatables";
 import { DeleteRounded, Edit } from "@mui/icons-material";
 import { ButtonGroup, Card, Typography } from "@mui/material";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Button } from "@mui/material";
 import { Stack } from "@mui/material";
 import { Container } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
+import { useAuthContext } from "../../context/userContext";
+import axios from "axios";
+import { useConfirm } from "material-ui-confirm";
 
 export default function ListePharmacie() {
     // LES HOOKS
+    useEffect(() => {
+        getAllParmacie();
+    }, []);
     const navigate = useNavigate();
+    const { user } = useAuthContext();
+    const [pharmacies, setPharmacy] = useState([]);
+    const confirm = useConfirm();
+    const getAllParmacie = () => {
+        axios
+            .get("https://hanniel-api.herokuapp.com/admin/all/pharmacy", {
+                userId: user.userId,
+                headers: { Authorization: `Bearer ${user.token}` },
+            })
+            .then((response) => {
+                console.log(response.data);
+                setPharmacy([...response.data.message]);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    console.log(user.token)
+
+    const handleDelete = (id) => {
+        confirm({
+            description: "Voulez-vous vraiment supprimer ? ",
+            title: "Etes vous sure ?",
+        })
+            .then((resp) => {
+                axios.delete("https://hanniel-api.herokuapp.com/admin/d/pharmacy/" + id, {
+                    userId: user.userId,
+                    headers: { Authorization: `Bearer ${user.token}` },
+                }).then((response) => {
+                    console.log(response.data.message)
+                }).catch((error) => {
+                    console.log(error)
+                })
+            })
+            .catch((error) => console.log(error));
+    };
 
     // Avec MUIDataTable On doit charger les donnees
     const column = [
+        { name: "name", label: "Nom", option: { filter: true, sort: true } },
+        { name: "phone", label: "Telephone", option: { filter: true, sort: true } },
         {
-            name: "id",
-            label: "ID",
-            option: {
-                filter: true,
-                sort: true,
-            },
-        },
-        {
-            name: "nom",
-            label: "Nom",
-            option: {
-                filter: true,
-                sort: true,
-            },
-        },
-        {
-            name: "telephone",
-            label: "Telephone",
-            option: {
-                filter: true,
-                sort: true,
-            },
-        },
-        {
-            name: "bp",
+            name: "pb",
             label: "Boite postale",
-            option: {
-                filter: true,
-                sort: true,
-            },
+            option: { filter: true, sort: true },
         },
-        {
-            name: "email",
-            label: "Email",
-            option: {
-                filter: true,
-                sort: true,
-            },
-        },
+        { name: "email", label: "Email", option: { filter: true, sort: true } },
         {
             name: "actions",
             label: "Actions",
@@ -64,13 +75,31 @@ export default function ListePharmacie() {
                     return (
                         <>
                             <ButtonGroup variants="contained">
-                                <Button variant="contained" size="small">
+                                <Button
+                                    variant="contained"
+                                    size="small"
+                                    onClick={() =>
+                                        navigate("/pharmacies/show", {
+                                            state: { id: pharmacies[dataIndex].id },
+                                        })
+                                    }
+                                >
                                     <VisibilityIcon />
                                 </Button>
-                                <Button variant="contained" size="small" color="secondary" onClick={() => navigate("/pharmacies/update")}>
+                                {/* <Button
+                                    variant="contained"
+                                    size="small"
+                                    color="warning"
+                                    onClick={() => navigate("/pharmacies/update", { state: { id: pharmacies[dataIndex].id } })}
+                                >
                                     <Edit />
-                                </Button>
-                                <Button color="error" variant="contained" size="small">
+                                </Button> */}
+                                <Button
+                                    color="error"
+                                    variant="contained"
+                                    size="small"
+                                    onClick={() => handleDelete(pharmacies[dataIndex].id)}
+                                >
                                     <DeleteRounded />
                                 </Button>
                             </ButtonGroup>
@@ -84,23 +113,6 @@ export default function ListePharmacie() {
     const options = {
         filterType: "checkbox",
     };
-
-    const data = [
-        {
-            id: "0",
-            nom: "Pharmacie du centre",
-            telephone: "6901398333",
-            bp: "123 Bafoussam",
-            email: "mail@fmaie.com",
-        },
-        {
-            id: "1",
-            nom: "Pharmacie du centre",
-            telephone: "6901398333",
-            bp: "123 Bafoussam",
-            email: "mail@fmaie.com",
-        },
-    ];
 
     return (
         <Page title="Liste des pharmacies">
@@ -121,14 +133,12 @@ export default function ListePharmacie() {
                 </Stack>
 
                 <Card>
-
                     <MUIDataTable
                         title={"Liste des pharmacies"}
-                        data={data}
+                        data={pharmacies}
                         columns={column}
                         options={options}
                     />
-
                 </Card>
             </Container>
         </Page>

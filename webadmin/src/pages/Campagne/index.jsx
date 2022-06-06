@@ -18,12 +18,11 @@ const ListeCampagne = () => {
 
 
     const [campagnes, setCampagne] = useState([])
-    const [hopital, setHopital] = useState({})
 
     // Recuperer toutes les campagnes
     const getAllCampagne = () => {
         let campagnes = [];
-        axios.get("https://hanniel-api.herokuapp.com/admin/campaign", {
+        axios.get("https://hanniel-api.herokuapp.com/admin/all/campaign", {
             userId: user.userId,
             headers: { Authorization: `Bearer ${user.token}` }
         }).then((response) => {
@@ -35,23 +34,12 @@ const ListeCampagne = () => {
         })
     }
 
-    // Recuperer un hoptal avec son ID
-    const getOneHopital = (id) => {
-        axios.get("https://hanniel-api.herokuapp.com/hanniel/admin/hospital/" + id, {
-            userId: user.userId,
-            headers: { Authorization: `Bearer ${user.token}` }
-        }).then((response) => {
-            setHopital(response.data.message)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
     const columns = [
-        { name: "id", label: "ID", option: { filter: true, sort: true, } },
+        /*  { name: "id", label: "ID", option: { filter: true, sort: true, } }, */
         { name: "name", label: "Nom", option: { filter: true, sort: true, } },
         { name: "dateBegin", label: "Date debut", option: { filter: true, sort: true, } },
         { name: "dateEnd", label: "Date de fin", option: { filter: true, sort: true, } },
-        { name: "hospitalId", label: "Hopital", option: { filter: true, sort: true, } },
+        /* { name: "hospitalId", label: "Hopital", option: { filter: true, sort: true, } }, */
         { name: "responsable", label: "Responsables", option: { filter: true, sort: true, } },
         {
             name: "actions",

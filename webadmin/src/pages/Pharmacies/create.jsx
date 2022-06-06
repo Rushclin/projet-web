@@ -6,23 +6,34 @@ import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { Card } from "@mui/material";
 import { useState } from "react";
+import { useAuthContext } from "../../context/userContext";
+import axios from "axios";
 
 const NouvellePharmacie = () => {
     // HOOKS HOOKS
+    const navigate = useNavigate();
+    const { user } = useAuthContext();
+    const [message, setMessage] = useState("")
+
     // bp pour Boite Postale
     const [newPharmacie, setNewPharmacie] = useState({
-        nom: "",
+        name: "",
         longitude: "",
         latitude: "",
         description: "",
-        telephone: "",
-        bp: "",
+        pb: "",
         email: "",
+        password: "12345678"
     });
 
     // Pur gerer les erreur de saisie
     const [error, setError] = useState(false);
+    const [image, setImage] = useState({});
 
+    const handleImage = e => {
+        console.log("Image", e.target.files[0])
+        setImage(e.target.files[0])
+    }
     const handelChange = (e) => {
         setNewPharmacie({ ...newPharmacie, [e.target.name]: e.target.value });
     };
@@ -30,12 +41,12 @@ const NouvellePharmacie = () => {
     const handleReset = () => {
         setNewPharmacie({
             ...newPharmacie,
-            nom: "",
+            name: "",
             longitude: "",
             latitude: "",
             description: "",
-            telephone: "",
-            bp: "",
+            phone: "",
+            pb: "",
             email: "",
         });
 
@@ -47,7 +58,7 @@ const NouvellePharmacie = () => {
 
         // On doit faire les tests pour la logique metier
 
-        if (!newPharmacie.nom.trim()) {
+        if (!newPharmacie.name.trim()) {
             setError(true);
         }
         if (!newPharmacie.longitude.trim()) {
@@ -59,18 +70,33 @@ const NouvellePharmacie = () => {
         if (!newPharmacie.description.trim()) {
             setError(true);
         }
-        if (!newPharmacie.telephone.trim()) {
+        if (!newPharmacie.phone.trim()) {
             setError(true);
         }
-        if (!newPharmacie.bp.trim()) {
+        if (!newPharmacie.pb.trim()) {
             setError(true);
         }
         if (!newPharmacie.email.trim()) {
             setError(true);
         }
         console.log(newPharmacie);
+
+        console.log({ ...newPharmacie })
+        const data = new FormData()
+        data.append("pharmacie", JSON.stringify(newPharmacie))
+        data.append("image", image);
+
+        axios.post("https://hanniel-api.herokuapp.com/admin/c/pharmacy", data, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        }).then((response) => {
+            console.log("Bien envoye")
+            navigate("/pharmacies")
+            setMessage("Pharmacie creee avec succes")
+        }).catch((error) => {
+            setMessage("Erreur interne du serveur")
+            console.log(error)
+        })
     };
-    const navigate = useNavigate();
 
     return (
         <Page title="Nouvelle pharmacie">
@@ -94,6 +120,7 @@ const NouvellePharmacie = () => {
                             style={{ fontWeight: "100" }}
                         >
                             {error && "Veuillez remplir tous les champs"}
+                            {message}
                         </Typography>
                     </Box>
                     <Box component="form">
@@ -102,31 +129,31 @@ const NouvellePharmacie = () => {
                                 <TextField
                                     onChange={handelChange}
                                     required
-                                    value={newPharmacie.nom}
+                                    value={newPharmacie.name}
                                     label="Nom pharmacie "
-                                    id="nom"
+                                    id="name"
                                     margin="normal"
-                                    name="nom"
+                                    name="name"
                                     fullWidth
                                 />
                                 <TextField
                                     onChange={handelChange}
                                     required
-                                    value={newPharmacie.telephone}
+                                    value={newPharmacie.phone}
                                     label="Telephone "
-                                    id="telephone"
+                                    id="phone"
                                     margin="normal"
-                                    name="telephone"
+                                    name="phone"
                                     fullWidth
                                 />
                                 <TextField
                                     onChange={handelChange}
                                     required
-                                    value={newPharmacie.bp}
+                                    value={newPharmacie.pb}
                                     label="Boite postale "
-                                    id="bp"
+                                    id="pb"
                                     margin="normal"
-                                    name="bp"
+                                    name="pb"
                                     fullWidth
                                 />
                             </Grid>
@@ -161,6 +188,9 @@ const NouvellePharmacie = () => {
                                     name="longitude"
                                     fullWidth
                                 />
+                            </Grid>
+                            <Grid item md={12} px={1}>
+                                <TextField id="logo" type="file" name="logo" margin="normal" fullWidth onChange={handleImage} value={newPharmacie.logo} />
                             </Grid>
                             <Grid item md={12} px={1}>
                                 <TextField

@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext({
@@ -28,7 +29,7 @@ const AuthContextProvider = ({ children }) => {
     const value = { user: user, logged: logged, update: checkUser };
 
     return (
-        pending ? <div> Loading...</div> : <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+        pending ? <div> <CircularProgress /> </div> : <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
     );
 };
 

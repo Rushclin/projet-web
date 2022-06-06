@@ -6,22 +6,49 @@ import { TextField } from "@mui/material";
 import { Grid } from "@mui/material";
 import { Container } from "@mui/material";
 import { Box } from "@mui/material";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
+import { useAuthContext } from "../../context/userContext";
 
 export default function UpdatePharmacie() {
 
     // LES HOOKS 
     const [error, setError] = useState(false);
+    const location = useLocation()
+    const { user } = useAuthContext();
+
+    useEffect(() => {
+        getPharmcie()
+    }, [])
+
+    console.log(location.state.id)
+    const id = location.state.id
+
+    // Recuperation de la pharmacie en ligne 
+    const getPharmcie = () => {
+        axios
+            .get("https://hanniel-api.herokuapp.com/admin/one/pharmacy/" + id, {
+                userId: user.userId,
+                headers: { Authorization: `Bearer ${user.token}` },
+            })
+            .then((response) => {
+                setPharmacieUpdate(response.data.message);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
 
     const [pharmacieUpdate, setPharmacieUpdate] = useState({
-        nom: "",
+        name: "",
         longitude: "",
         latitude: "",
         description: "",
-        telephone: "",
-        bp: "",
+        phone: "",
+        pb: "",
         email: "",
     });
 
@@ -32,11 +59,11 @@ export default function UpdatePharmacie() {
     const handleReset = () => {
         setPharmacieUpdate({
             ...pharmacieUpdate,
-            nom: "",
+            name: "",
             longitude: "",
             latitude: "",
             description: "",
-            telephone: "",
+            phone: "",
             bp: "",
             email: "",
         })
@@ -44,7 +71,7 @@ export default function UpdatePharmacie() {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!pharmacieUpdate.nom.trim()) {
+        if (!pharmacieUpdate.name.trim()) {
             setError(true);
         }
         if (!pharmacieUpdate.longitude.trim()) {
@@ -56,7 +83,7 @@ export default function UpdatePharmacie() {
         if (!pharmacieUpdate.description.trim()) {
             setError(true);
         }
-        if (!pharmacieUpdate.telephone.trim()) {
+        if (!pharmacieUpdate.phone.trim()) {
             setError(true);
         }
         if (!pharmacieUpdate.bp.trim()) {
@@ -99,33 +126,33 @@ export default function UpdatePharmacie() {
                             <Grid item md={6} px={1}>
                                 <TextField
                                     label="Nom de la pharmacie "
-                                    value={pharmacieUpdate.nom}
+                                    value={pharmacieUpdate.name}
                                     fullWidth
                                     id="nom"
                                     margin="normal"
-                                    name="nom"
+                                    name="name"
                                     required
                                     onChange={handleChange}
                                 />
                                 <TextField
                                     onChange={handleChange}
                                     required
-                                    value={pharmacieUpdate.telephone}
+                                    value={pharmacieUpdate.phone}
                                     label="Telephone "
-                                    id="telephone"
+                                    id="phone"
                                     margin="normal"
-                                    name="telephone"
+                                    name="phone"
                                     fullWidth
                                     type="number"
                                 />
                                 <TextField
                                     onChange={handleChange}
                                     required
-                                    value={pharmacieUpdate.bp}
+                                    value={pharmacieUpdate.pb}
                                     label="Boite postale "
-                                    id="bp"
+                                    id="pb"
                                     margin="normal"
-                                    name="bp"
+                                    name="pb"
                                     fullWidth
                                 />
                             </Grid>
