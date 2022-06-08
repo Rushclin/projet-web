@@ -1,74 +1,71 @@
-import { VaccinesOutlined } from "@mui/icons-material"
-import { Alert, Avatar, Snackbar } from '@mui/material'
-import { Paper } from '@mui/material'
-import { TextField } from "@mui/material"
-import { Checkbox } from "@mui/material"
-import { Button } from "@mui/material"
-import { FormControlLabel } from "@mui/material"
-import { Typography } from "@mui/material"
-import { Grid } from '@mui/material'
-import { Box } from '@mui/system'
-import React, { useState } from 'react'
-import { Link, useNavigate } from "react-router-dom"
-import Page from '../../components/Page'
-import axios from 'axios';
-import { useAuthContext } from "../../context/userContext"
-
+import { VaccinesOutlined } from "@mui/icons-material";
+import { Alert, Avatar } from "@mui/material";
+import { Paper } from "@mui/material";
+import { TextField } from "@mui/material";
+import { Button } from "@mui/material";
+import { Typography } from "@mui/material";
+import { Grid } from "@mui/material";
+import { Box } from "@mui/system";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Page from "../../components/Page";
+import axios from "axios";
+import { useAuthContext } from "../../context/userContext";
 
 const Copyright = (props) => {
     return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" to="#">
-                Notre site web
-            </Link>{' '}
+        <Typography
+            variant="body2"
+            color="text.secondary"
+            align="center"
+            {...props}
+        >
+            {"Copyright © "}
             {new Date().getFullYear()}
-            {'.'}
+            {"."}
         </Typography>
     );
-}
-
+};
 
 export default function LoginPage() {
-
-    //HOOKS 
-    const [user, setUser] = useState({ email: "", password: "" })
-    const [message, setMessage] = useState("")
-    const [error, setError] = useState(false)
-    const navigate = useNavigate()
+    //HOOKS
+    const [user, setUser] = useState({ email: "", password: "" });
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState(false);
+    const navigate = useNavigate();
     const AuthContext = useAuthContext();
 
     const handleChange = (e) => {
-        setUser(prevState => ({ ...prevState, [e.target.name]: e.target.value }))
-    }
+        setUser((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
+    };
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.post('https://hanniel-api.herokuapp.com/admin/signIn', user).then((response) => {
-            //console.log(response.data)
-            if (response.status && response.status === 200) {
-                window.sessionStorage.setItem('user', JSON.stringify(response.data));
-                navigate("/dashboard")
-                AuthContext.update();
-            } else {
-                setMessage("Connexion non reussit, veuillez verifier votre login ou mot de passe")
-                setError(true)
-            }
-        }).catch(((error) => {
-            console.log(error)
-            setMessage("Erreur de connexion, veuillez verifier vos identifiants")
-            setError(true)
-        }))
-        //navigate("/dashboard")
-        /* const data = new FormData(e.currentTarget)
-        console.log({
-            email: data.get('email')
-        }) */
-    }
+        e.preventDefault();
+        axios
+            .post("https://hanniel-api.herokuapp.com/admin/signIn", user)
+            .then((response) => {
+                //console.log(response.data)
+                if (response.status && response.status === 200) {
+                    window.sessionStorage.setItem("user", JSON.stringify(response.data));
+                    navigate("/dashboard");
+                    AuthContext.update();
+                } else {
+                    setMessage(
+                        "Connexion non reussie, veuillez verifier votre login ou mot de passe"
+                    );
+                    setError(true);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                setMessage("Erreur de connexion, veuillez verifier vos identifiants");
+                setError(true);
+            });
+    };
 
     return (
         <Page title="Login  page">
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Grid container component="main" sx={{ height: "100vh" }}>
                 <Grid
                     item
                     xs={false}
@@ -76,32 +73,42 @@ export default function LoginPage() {
                     md={6}
                     sx={{
                         backgroundImage: "url(https://source.unsplash.com/random)",
-                        backgroundRepeat: 'no-repeat',
+                        backgroundRepeat: "no-repeat",
                         backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
+                            t.palette.mode === "light"
+                                ? t.palette.grey[50]
+                                : t.palette.grey[900],
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
                     }}
                 />
 
                 <Grid item xs={12} sm={8} md={6} component={Paper} square>
-                    <Box sx={{
-                        my: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center'
-                    }}>
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <Box
+                        sx={{
+                            my: 8,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                             <VaccinesOutlined />
                         </Avatar>
 
-                        <Typography variant='h5' component='h1' style={{ textTransform: 'uppercase' }}>
-                            Connexion pour administrateur
+                        <Typography
+                            variant="h5"
+                            component="h1"
+                            style={{ textTransform: "uppercase", margin: "1px" }}
+                        >
+                            Connexion administrateur
                         </Typography>
-                        {
-                            error && <Alert severity="error">{message}</Alert>
-                        }
-                        <Box component="form" onSubmit={handleSubmit} style={{ width: '90%' }}>
+                        {error && <Alert severity="error">{message}</Alert>}
+                        <Box
+                            component="form"
+                            onSubmit={handleSubmit}
+                            style={{ width: "90%" }}
+                        >
                             <TextField
                                 margin="normal"
                                 required
@@ -125,10 +132,10 @@ export default function LoginPage() {
                                 value={user.password}
                                 onChange={handleChange}
                             />
-                            <FormControlLabel
+                            {/*  <FormControlLabel
                                 control={<Checkbox value="souvenir" color="primary" />}
                                 label="Se souvenir de moi"
-                            />
+                            /> */}
                             <Button
                                 type="submit"
                                 fullWidth
@@ -151,5 +158,5 @@ export default function LoginPage() {
                 </Grid>
             </Grid>
         </Page>
-    )
+    );
 }
