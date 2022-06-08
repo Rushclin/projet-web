@@ -1,5 +1,5 @@
 import { VaccinesOutlined } from "@mui/icons-material";
-import { Alert, Avatar } from "@mui/material";
+import { Alert, AlertTitle, Avatar, Checkbox, CircularProgress, FormControlLabel } from "@mui/material";
 import { Paper } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import axios from "axios";
 import { useAuthContext } from "../../context/userContext";
+import { useConfirm } from "material-ui-confirm";
 
 const Copyright = (props) => {
     return (
@@ -32,6 +33,7 @@ export default function LoginPage() {
     const [user, setUser] = useState({ email: "", password: "" });
     const [message, setMessage] = useState("");
     const [error, setError] = useState(false);
+    const [open, setOpen] = useState(false)
     const navigate = useNavigate();
     const AuthContext = useAuthContext();
 
@@ -41,10 +43,11 @@ export default function LoginPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setOpen(true)
+        setError(false)
         axios
             .post("https://hanniel-api.herokuapp.com/admin/signIn", user)
             .then((response) => {
-                //console.log(response.data)
                 if (response.status && response.status === 200) {
                     window.sessionStorage.setItem("user", JSON.stringify(response.data));
                     navigate("/dashboard");
@@ -60,6 +63,7 @@ export default function LoginPage() {
                 console.log(error);
                 setMessage("Erreur de connexion, veuillez verifier vos identifiants");
                 setError(true);
+                setOpen(false)
             });
     };
 
@@ -103,7 +107,13 @@ export default function LoginPage() {
                         >
                             Connexion administrateur
                         </Typography>
-                        {error && <Alert severity="error">{message}</Alert>}
+                        {
+                            error &&
+                            <Alert severity="error">
+                                <AlertTitle>Une erreur est survenue</AlertTitle>
+                                {message}
+                            </Alert>
+                        }
                         <Box
                             component="form"
                             onSubmit={handleSubmit}
@@ -132,17 +142,23 @@ export default function LoginPage() {
                                 value={user.password}
                                 onChange={handleChange}
                             />
-                            {/*  <FormControlLabel
+                            <FormControlLabel
                                 control={<Checkbox value="souvenir" color="primary" />}
                                 label="Se souvenir de moi"
-                            /> */}
+                            />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
+                                size="large"
                             >
-                                SE CONNECTER
+                                {
+                                    open && <CircularProgress color="inherit" />
+                                }
+                                {
+                                    !open && "SE CONNECTER"
+                                }
                             </Button>
                             <Grid container>
                                 <Grid item xs>
@@ -155,8 +171,8 @@ export default function LoginPage() {
                             <Copyright sx={{ mt: 5 }} />
                         </Box>
                     </Box>
-                </Grid>
-            </Grid>
-        </Page>
+                </Grid >
+            </Grid >
+        </Page >
     );
 }
