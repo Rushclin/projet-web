@@ -14,13 +14,17 @@ import { useConfirm } from "material-ui-confirm";
 
 export default function ListePharmacie() {
     // LES HOOKS
-    useEffect(() => {
-        getAllParmacie();
-    }, []);
     const navigate = useNavigate();
     const { user } = useAuthContext();
     const [pharmacies, setPharmacy] = useState([]);
     const confirm = useConfirm();
+    const [confirmDelete, setconfirmDelete] = useState(false)
+
+    useEffect(() => {
+        getAllParmacie();
+    }, [confirmDelete]);
+
+
     const getAllParmacie = () => {
         axios
             .get("https://hanniel-api.herokuapp.com/admin/all/pharmacy", {
@@ -49,6 +53,7 @@ export default function ListePharmacie() {
                     headers: { Authorization: `Bearer ${user.token}` },
                 }).then((response) => {
                     console.log(response.data.message)
+                    setconfirmDelete(!confirmDelete)
                 }).catch((error) => {
                     console.log(error)
                 })
