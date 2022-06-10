@@ -2,7 +2,7 @@ import { useRoutes } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
 import ListeCampagne from "./pages/Campagne";
 import ShowCampagne from "./pages/Campagne/show";
-import DashboardApp from "./pages/DashboardApp";
+import Dashboard from "./pages/Dashboard";
 import ListeHopitaux from "./pages/Hopital";
 import CreerHopital from "./pages/Hopital/create";
 import UpdateHopital from "./pages/Hopital/update";
@@ -22,7 +22,7 @@ export default function Router() {
       /* path: "/", */
       element: <DashboardLayout />,
       children: [
-        { path: "dashboard", element: <DashboardApp /> },
+        { path: "dashboard", element: <Dashboard /> },
         // Pharmacies
         { path: "pharmacies", element: <ListePharmacie /> },
         { path: "pharmacies/create", element: <NouvellePharmacie /> },
