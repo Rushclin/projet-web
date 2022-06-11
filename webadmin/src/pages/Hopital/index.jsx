@@ -2,7 +2,7 @@ import { Stack } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { Container } from "@mui/material";
 import Page from "../../components/Page";
-import React from "react";
+import React, { useState } from "react";
 import { Typography } from "@mui/material";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -10,10 +10,14 @@ import { ButtonGroup } from "@mui/material";
 import { Card } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DeleteRounded, Edit } from "@mui/icons-material";
+import { useAuthContext } from "../../context/userContext";
 
 export default function ListeHopitaux() {
     // LES HOOKS
     const navigate = useNavigate();
+    const [hopitaux, setHopitaux] = useState([])
+    const { user } = useAuthContext()
+
 
     const columns = [
         {
