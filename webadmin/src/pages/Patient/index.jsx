@@ -10,23 +10,36 @@ import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Page from "../../components/Page";
 import MUIDataTable from "mui-datatables";
+import axios from "axios";
+import { useAuthContext } from "../../context/userContext";
+import { useEffect, useState } from "react";
 
 const ListePatient = () => {
     // HOOKS
+
+    useEffect(() => {
+        getPatient()
+    }, [])
+
     const navigate = useNavigate();
+    const { user } = useAuthContext()
+    const [patients, setPatient] = useState([])
+
+    const getPatient = () => {
+        axios.get("https://hanniel-api.herokuapp.com/admin/all/patient", {
+            userId: user.userId,
+            headers: { Authorization: `Bearer ${user.token}` }
+        }).then((response) => {
+            setPatient([...response.data.message])
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 
     // MUIDataTable
     const columns = [
         {
-            name: "id",
-            label: "ID",
-            option: {
-                filter: true,
-                sort: true,
-            },
-        },
-        {
-            name: "nom",
+            name: "name",
             label: "Nom",
             option: {
                 filter: true,
@@ -34,7 +47,7 @@ const ListePatient = () => {
             },
         },
         {
-            name: "prenom",
+            name: "surname",
             label: "Prenom",
             option: {
                 filter: true,
@@ -50,7 +63,7 @@ const ListePatient = () => {
             },
         },
         {
-            name: "telephone",
+            name: "phone",
             label: "Telephone",
             option: {
                 filter: true,
@@ -76,7 +89,9 @@ const ListePatient = () => {
                                 <Button
                                     variant="contained"
                                     size="small"
-                                    onClick={() => navigate("/patients/show")}
+                                    onClick={() => navigate("/patients/show", {
+                                        state: { id: patients[index].id }
+                                    })}
                                 >
                                     <VisibilityIcon />
                                 </Button>
@@ -92,16 +107,6 @@ const ListePatient = () => {
         filterType: "checkbox",
     };
 
-    const data = [
-        {
-            id: "0",
-            nom: "Takam ",
-            prenom: "Rushclin",
-            sexe: "Masculin",
-            telephone: "690139627",
-            email: "takamrushclin@gmail.com",
-        },
-    ];
     return (
         <Page title="Liste des patient">
             <Container>
@@ -114,7 +119,7 @@ const ListePatient = () => {
                 <Card>
                     <MUIDataTable
                         title={"Liste des patients"}
-                        data={data}
+                        data={patients}
                         columns={columns}
                         options={options}
                     />
