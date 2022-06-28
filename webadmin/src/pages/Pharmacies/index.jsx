@@ -45,7 +45,7 @@ export default function ListePharmacie() {
     const handleDelete = (id) => {
         confirm({
             description: "Voulez-vous vraiment supprimer ? ",
-            title: "Etes vous sure ?",
+            title: "Suppression d'une pharmacie",
         })
             .then((resp) => {
                 axios.delete("https://hanniel-api.herokuapp.com/admin/d/pharmacy/" + id, {

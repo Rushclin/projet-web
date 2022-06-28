@@ -21,7 +21,7 @@ const Copyright = (props) => {
             align="center"
             {...props}
         >
-            {"Copyright © "}
+            {"Copyright © TEEMES "}
             {new Date().getFullYear()}
             {"."}
         </Typography>
@@ -68,9 +68,9 @@ export default function LoginPage() {
     };
 
     return (
-        <Page title="Login  page">
-            <Grid container component="main" sx={{ height: "100vh" }}>
-                <Grid
+        <Page title="Login">
+            <Grid container component="main" sx={{ height: "50vh" }} style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                {/*   <Grid
                     item
                     xs={false}
                     sm={4}
@@ -85,12 +85,12 @@ export default function LoginPage() {
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                     }}
-                />
+                /> */}
 
-                <Grid item xs={12} sm={8} md={6} component={Paper} square>
+                <Grid item xs={12} sm={8} md={4} elevation={10} component={Paper} square style={{ margin: '20px auto' }}>
                     <Box
                         sx={{
-                            my: 8,
+                            my: 2,
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",

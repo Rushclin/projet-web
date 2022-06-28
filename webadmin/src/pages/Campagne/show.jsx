@@ -5,6 +5,12 @@ import {
     Container,
     Grid,
     Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
     Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -14,37 +20,38 @@ import { useAuthContext } from "../../context/userContext";
 import axios from "axios";
 
 const ShowCampagne = () => {
+    useEffect(() => {
+        getCampage();
+        getOneHopital();
+    }, []);
+
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuthContext();
     const [campagne, setCampagne] = useState({});
     const [hopital, setHopital] = useState({});
 
-    useEffect(() => {
-        getCampage();
-        getOneHopital(location.state.id);
-    }, []);
-
-    console.log("ID", location.state.id);
-    console.log("Utilisr", user);
     const id = location.state.id;
+    const hopitalId = location.state.hopitalId;
 
     // Recuperer un hoptal avec son ID
-    const getOneHopital = (id) => {
+    const getOneHopital = () => {
         axios
-            .get("https://hanniel-api.herokuapp.com/admin/one/hospital/" + id, {
-                userId: user.userId,
-                headers: { Authorization: `Bearer ${user.token}` },
-            })
+            .get(
+                "https://hanniel-api.herokuapp.com/admin/one/hospital/" + hopitalId,
+                {
+                    userId: user.userId,
+                    headers: { Authorization: `Bearer ${user.token}` },
+                }
+            )
             .then((response) => {
-                setHopital({ ...response.data.message });
+                setHopital(response.data.message);
+                console.log(response.data.message);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
-
-    console.log(hopital);
 
     const getCampage = () => {
         axios
@@ -59,8 +66,6 @@ const ShowCampagne = () => {
                 console.log(error);
             });
     };
-
-    console.log("CAMM", campagne);
 
     return (
         <Page title="Afficher une campagne">
@@ -86,176 +91,47 @@ const ShowCampagne = () => {
                                 alt={campagne.name}
                             />
                         </Grid>
-                        <Grid item md={6} p={2} pt={4}>
-                            <Typography
-                                component="h3"
-                                variant="h6"
-                                style={{ textAlign: "center", paddingBottom: "10px" }}
-                            >
-                                Detail sur la campagne
-                            </Typography>
-
-                            <hr />
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "2px" }}
-                            >
-                                Description de de la campagne
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="h3"
-                                style={{
-                                    fontSize: "12px",
-                                    fontWeight: "100",
-                                    paddingLeft: "10px",
-                                    paddingBottom: "15px",
-                                }}
-                            >
-                                {campagne.description}
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "2px" }}
-                            >
-                                Nom de l'hopital
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="h3"
-                                style={{
-                                    fontSize: "12px",
-                                    fontWeight: "100",
-                                    paddingLeft: "10px",
-                                    paddingBottom: "15px",
-                                }}
-                            >
-                                {hopital.name}
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "2px" }}
-                            >
-                                Responsable de de la campagne
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="h3"
-                                style={{
-                                    fontSize: "12px",
-                                    fontWeight: "100",
-                                    paddingLeft: "10px",
-                                    paddingBottom: "15px",
-                                }}
-                            >
-                                {campagne.dateBegin}
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "12px", opacity: "0.5", paddingTop: "2px" }}
-                            >
-                                Nom de la campagne
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="h3"
-                                style={{
-                                    fontSize: "12px",
-                                    fontWeight: "100",
-                                    paddingLeft: "10px",
-                                    paddingBottom: "15px",
-                                }}
-                            >
-                                {campagne.name}
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "2px" }}
-                            >
-                                Date de debut de de la campagne
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="h3"
-                                style={{
-                                    fontSize: "12px",
-                                    fontWeight: "100",
-                                    paddingLeft: "10px",
-                                    paddingBottom: "15px",
-                                }}
-                            >
-                                {campagne.dateBegin}
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "2px" }}
-                            >
-                                Date de fin de de la campagne
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="h3"
-                                style={{
-                                    fontSize: "12px",
-                                    fontWeight: "100",
-                                    paddingLeft: "10px",
-                                    paddingBottom: "15px",
-                                }}
-                            >
-                                {campagne.dateEnd}
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "2px" }}
-                            >
-                                Hopital
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="h3"
-                                style={{
-                                    fontSize: "12px",
-                                    fontWeight: "100",
-                                    paddingLeft: "10px",
-                                    paddingBottom: "15px",
-                                }}
-                            >
-                                {campagne.hospitalId}
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "2px" }}
-                            >
-                                Temps de de la campagne
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="h3"
-                                style={{
-                                    fontSize: "12px",
-                                    fontWeight: "100",
-                                    paddingLeft: "10px",
-                                    paddingBottom: "15px",
-                                }}
-                            >
-                                {campagne.hour}
-                            </Typography>
+                        <Grid item md={6}>
+                            <TableContainer>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Proprietes</TableCell>
+                                            <TableCell>Valeur</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell>Nom</TableCell>
+                                            <TableCell>{campagne.name}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Description</TableCell>
+                                            <TableCell>{campagne.description}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Responsable</TableCell>
+                                            <TableCell>{campagne.responsable}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Hopital</TableCell>
+                                            <TableCell>{hopital.name}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Debut</TableCell>
+                                            <TableCell>{campagne.dateBegin}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Fin</TableCell>
+                                            <TableCell>{campagne.dateEnd}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Heure par jour</TableCell>
+                                            <TableCell>{campagne.hour}</TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </Grid>
                     </Grid>
                 </Card>

@@ -13,7 +13,7 @@ const NouvellePharmacie = () => {
     // HOOKS HOOKS
     const navigate = useNavigate();
     const { user } = useAuthContext();
-    const [message, setMessage] = useState("")
+    const [message, setMessage] = useState("");
 
     // bp pour Boite Postale
     const [newPharmacie, setNewPharmacie] = useState({
@@ -23,17 +23,17 @@ const NouvellePharmacie = () => {
         description: "",
         pb: "",
         email: "",
-        password: "12345678"
+        password: "12345678",
     });
 
     // Pur gerer les erreur de saisie
     const [error, setError] = useState(false);
     const [image, setImage] = useState({});
 
-    const handleImage = e => {
-        console.log("Image", e.target.files[0])
-        setImage(e.target.files[0])
-    }
+    const handleImage = (e) => {
+        console.log("Image", e.target.files[0]);
+        setImage(e.target.files[0]);
+    };
     const handelChange = (e) => {
         setNewPharmacie({ ...newPharmacie, [e.target.name]: e.target.value });
     };
@@ -58,44 +58,48 @@ const NouvellePharmacie = () => {
 
         // On doit faire les tests pour la logique metier
 
-        if (!newPharmacie.name.trim()) {
+        if (newPharmacie.name.trim().length == 0) {
             setError(true);
         }
-        if (!newPharmacie.longitude.trim()) {
+        if (newPharmacie.longitude.trim().length == 0) {
             setError(true);
         }
-        if (!newPharmacie.latitude.trim()) {
+        if (newPharmacie.latitude.trim().length == 0) {
             setError(true);
         }
-        if (!newPharmacie.description.trim()) {
+        if (newPharmacie.description.trim().length == 0) {
             setError(true);
         }
-        if (!newPharmacie.phone.trim()) {
+        if (newPharmacie.phone.trim().length == 0) {
             setError(true);
         }
-        if (!newPharmacie.pb.trim()) {
+        if (newPharmacie.pb.trim().length == 0) {
             setError(true);
         }
-        if (!newPharmacie.email.trim()) {
+        if (newPharmacie.email.trim().length == 0) {
             setError(true);
         }
-        console.log(newPharmacie);
 
-        console.log({ ...newPharmacie })
-        const data = new FormData()
-        data.append("pharmacie", JSON.stringify(newPharmacie))
-        data.append("image", image);
+        if (!error) {
+            const data = new FormData();
+            data.append("pharmacie", JSON.stringify(newPharmacie));
+            data.append("image", image);
+            console.log(data)
 
-        axios.post("https://hanniel-api.herokuapp.com/admin/c/pharmacy", data, {
-            headers: { Authorization: `Bearer ${user.token}` }
-        }).then((response) => {
-            console.log("Bien envoye")
-            navigate("/pharmacies")
-            setMessage("Pharmacie creee avec succes")
-        }).catch((error) => {
-            setMessage("Erreur interne du serveur")
-            console.log(error)
-        })
+            axios
+                .post("https://hanniel-api.herokuapp.com/admin/c/pharmacy", data, {
+                    headers: { Authorization: `Bearer ${user.token}` },
+                })
+                .then((response) => {
+                    console.log("Bien envoye");
+                    navigate("/pharmacies");
+                    setMessage("Pharmacie creee avec succes");
+                })
+                .catch((error) => {
+                    setMessage("Erreur interne du serveur");
+                    console.log(error);
+                });
+        }
     };
 
     return (
@@ -190,7 +194,15 @@ const NouvellePharmacie = () => {
                                 />
                             </Grid>
                             <Grid item md={12} px={1}>
-                                <TextField id="logo" type="file" name="logo" margin="normal" fullWidth onChange={handleImage} value={newPharmacie.logo} />
+                                <TextField
+                                    id="logo"
+                                    type="file"
+                                    name="logo"
+                                    margin="normal"
+                                    fullWidth
+                                    onChange={handleImage}
+                                    value={newPharmacie.logo}
+                                />
                             </Grid>
                             <Grid item md={12} px={1}>
                                 <TextField

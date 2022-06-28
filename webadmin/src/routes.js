@@ -5,6 +5,7 @@ import ShowCampagne from "./pages/Campagne/show";
 import Dashboard from "./pages/Dashboard";
 import ListeHopitaux from "./pages/Hopital";
 import CreerHopital from "./pages/Hopital/create";
+import ShowHopital from "./pages/Hopital/show";
 import UpdateHopital from "./pages/Hopital/update";
 import LoginPage from "./pages/Login";
 import ListeMedicament from "./pages/Medicament";
@@ -32,6 +33,7 @@ export default function Router() {
         { path: "hopital", element: <ListeHopitaux /> },
         { path: "hopital/create", element: <CreerHopital /> },
         { path: "hopital/update", element: <UpdateHopital /> },
+        { path: "hopital/show", element: <ShowHopital /> },
 
         // Patient
         { path: "patients", element: <ListePatient /> },

@@ -5,6 +5,12 @@ import {
     Container,
     Grid,
     Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
     Typography,
 } from "@mui/material";
 import axios from "axios";
@@ -60,82 +66,54 @@ const ShowPharmacie = () => {
                         <Grid item md={6}>
                             <CardMedia component="img" image={pharmacie.logo} />
                         </Grid>
-                        <Grid item md={6} p={2} pt={3}>
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{
-                                    fontSize: "15px",
-                                    opacity: "0.5",
-                                    paddingBottom: "10px",
-                                }}
-                            >
-                                Detail sur la pharmacie
-                            </Typography>
-                            <hr />
+                        <Grid item md={6}>
+                            <Typography style={{ paddingTop: 10, textAlign: 'center', paddingBottom: 10 }}>Detail</Typography><hr />
+                            <TableContainer>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>
+                                                Proprietes
+                                            </TableCell>
+                                            <TableCell>
+                                                Valeur
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell>Nom</TableCell>
+                                            <TableCell>{pharmacie.name}</TableCell>
+                                        </TableRow>
 
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "10px" }}
-                            >
-                                Nom{" "}
-                            </Typography>
-                            <Typography>{pharmacie.name}</Typography>
+                                        <TableRow>
+                                            <TableCell>Description</TableCell>
+                                            <TableCell>{pharmacie.description}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Email</TableCell>
+                                            <TableCell>{pharmacie.email}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Boite postale</TableCell>
+                                            <TableCell>{pharmacie.pb}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Telephone</TableCell>
+                                            <TableCell>{pharmacie.phone}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Latitude</TableCell>
+                                            <TableCell>{pharmacie.latitude}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Longitude</TableCell>
+                                            <TableCell>{pharmacie.longitude}</TableCell>
+                                        </TableRow>
 
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "10px" }}
-                            >
-                                Description
-                            </Typography>
-                            <Typography>{pharmacie.description}</Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "10px" }}
-                            >
-                                Email
-                            </Typography>
-                            <Typography>{pharmacie.email}</Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "10px" }}
-                            >
-                                Boite postale
-                            </Typography>
-                            <Typography>{pharmacie.pb}</Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "10px" }}
-                            >
-                                Telephone
-                            </Typography>
-                            <Typography>{pharmacie.phone}</Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "10px" }}
-                            >
-                                Lattitude
-                            </Typography>
-                            <Typography>{pharmacie.latitude}</Typography>
-
-                            <Typography
-                                variant="h6"
-                                component="p"
-                                style={{ fontSize: "15px", opacity: "0.5", paddingTop: "10px" }}
-                            >
-                                Longitude
-                            </Typography>
-                            <Typography>{pharmacie.longitude}</Typography>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </Grid>
                     </Grid>
                 </Card>
