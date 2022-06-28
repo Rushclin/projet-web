@@ -18,23 +18,26 @@ const ListePatient = () => {
     // HOOKS
 
     useEffect(() => {
-        getPatient()
-    }, [])
+        getPatient();
+    }, []);
 
     const navigate = useNavigate();
-    const { user } = useAuthContext()
-    const [patients, setPatient] = useState([])
+    const { user } = useAuthContext();
+    const [patients, setPatient] = useState([]);
 
     const getPatient = () => {
-        axios.get("https://hanniel-api.herokuapp.com/admin/all/patient", {
-            userId: user.userId,
-            headers: { Authorization: `Bearer ${user.token}` }
-        }).then((response) => {
-            setPatient([...response.data.message])
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
+        axios
+            .get("https://hanniel-api.herokuapp.com/admin/all/patient", {
+                userId: user.userId,
+                headers: { Authorization: `Bearer ${user.token}` },
+            })
+            .then((response) => {
+                setPatient([...response.data.message]);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     // MUIDataTable
     const columns = [
@@ -89,9 +92,11 @@ const ListePatient = () => {
                                 <Button
                                     variant="contained"
                                     size="small"
-                                    onClick={() => navigate("/patients/show", {
-                                        state: { id: patients[index].id }
-                                    })}
+                                    onClick={() =>
+                                        navigate("/patients/show", {
+                                            state: { id: patients[index].id },
+                                        })
+                                    }
                                 >
                                     <VisibilityIcon />
                                 </Button>

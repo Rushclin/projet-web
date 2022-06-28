@@ -17,14 +17,15 @@ import { useConfirm } from "material-ui-confirm";
 export default function ListeHopitaux() {
 
     // LES HOOKS
-    useEffect(() => {
-        getAllHopital();
-    }, []);
-
     const navigate = useNavigate();
     const [hopitaux, setHopitaux] = useState([]);
     const { user } = useAuthContext();
     const confirm = useConfirm();
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        getAllHopital();
+    }, [error]);
 
     const getAllHopital = () => {
         axios
@@ -34,6 +35,7 @@ export default function ListeHopitaux() {
             })
             .then((response) => {
                 setHopitaux(response.data.message);
+                setError(!error)
             })
             .catch((error) => {
                 console.log(error);
@@ -47,6 +49,13 @@ export default function ListeHopitaux() {
             title: "Suppression d'un hopital",
         })
             .then((rep) => {
+                axios.delete("https://hanniel-api.herokuapp.com/admin/d/hospital/" + id, {
+                    headers: { Authorization: `Bearer ${user.token}` },
+                }).then((response) => {
+                    console.log("Bien supprime")
+                }).catch((error) => {
+                    console.log(error)
+                })
                 // On lance l'appel http ici
             })
             .catch((err) => {
@@ -85,7 +94,7 @@ export default function ListeHopitaux() {
                                 <Button variant="contained" size="small">
                                     <VisibilityIcon onClick={() => navigate("/hopital/show", { state: { id: hopitaux[index].id } })} />
                                 </Button>
-                                <Button
+                                {/* <Button
                                     variant="contained"
                                     size="small"
                                     color="warning"
@@ -94,7 +103,7 @@ export default function ListeHopitaux() {
                                     }}
                                 >
                                     <Edit />
-                                </Button>
+                                </Button> */}
                                 <Button
                                     color="error"
                                     variant="contained"
@@ -128,6 +137,7 @@ export default function ListeHopitaux() {
                     <Button
                         variant="contained"
                         onClick={() => navigate("/hopital/create")}
+                        startIcon={<PlusOne />}
                     >
                         Nouvel hopital
                     </Button>

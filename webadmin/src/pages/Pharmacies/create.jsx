@@ -8,6 +8,7 @@ import { Card } from "@mui/material";
 import { useState } from "react";
 import { useAuthContext } from "../../context/userContext";
 import axios from "axios";
+import { Add, ArrowBack, RestoreRounded } from "@mui/icons-material";
 
 const NouvellePharmacie = () => {
     // HOOKS HOOKS
@@ -31,7 +32,6 @@ const NouvellePharmacie = () => {
     const [image, setImage] = useState({});
 
     const handleImage = (e) => {
-        console.log("Image", e.target.files[0]);
         setImage(e.target.files[0]);
     };
     const handelChange = (e) => {
@@ -84,7 +84,8 @@ const NouvellePharmacie = () => {
             const data = new FormData();
             data.append("pharmacie", JSON.stringify(newPharmacie));
             data.append("image", image);
-            console.log(data)
+            console.log("Pharmacie", data.get('pharmacie'))
+            console.log("Image", data.get("image"))
 
             axios
                 .post("https://hanniel-api.herokuapp.com/admin/c/pharmacy", data, {
@@ -112,7 +113,7 @@ const NouvellePharmacie = () => {
                     mb={5}
                 >
                     <Typography variant="h5">Nouvelle pharmacie</Typography>
-                    <Button variant="contained" onClick={() => navigate("/pharmacies")}>
+                    <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate("/pharmacies")}>
                         Retour
                     </Button>
                 </Stack>
@@ -222,6 +223,7 @@ const NouvellePharmacie = () => {
                                 <Button
                                     onClick={handleSubmit}
                                     type="submit"
+                                    startIcon={<Add />}
                                     variant="contained"
                                     style={{
                                         marginBottom: "15px",
@@ -233,6 +235,7 @@ const NouvellePharmacie = () => {
                                 </Button>
                                 <Button
                                     onClick={handleReset}
+                                    startIcon={<RestoreRounded />}
                                     variant="contained"
                                     color="error"
                                     style={{

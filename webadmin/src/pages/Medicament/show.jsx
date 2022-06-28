@@ -1,3 +1,4 @@
+import { ArrowBack } from "@mui/icons-material";
 import {
     Button,
     Card,
@@ -27,7 +28,6 @@ const ShowMedicament = () => {
     const { user } = useAuthContext();
     const id = location.state.id;
     const pharmacieId = location.state.pharmacieId
-    console.log("Iddddd", pharmacieId)
 
     useEffect(() => {
         getMedicament();
@@ -69,8 +69,6 @@ const ShowMedicament = () => {
             });
     };
 
-    console.log(medicament);
-    console.log(pharmacie);
 
     return (
         <Page title="Afficher medicament">
@@ -82,7 +80,7 @@ const ShowMedicament = () => {
                     justifyContent="space-between"
                 >
                     <Typography variant="h5">Afficher un medicament</Typography>
-                    <Button variant="contained" onClick={() => navigate("/medicaments")}>
+                    <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate("/medicaments")}>
                         Retour
                     </Button>
                 </Stack>

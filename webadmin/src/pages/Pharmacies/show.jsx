@@ -1,3 +1,4 @@
+import { ArrowBack } from "@mui/icons-material";
 import {
     Button,
     Card,
@@ -57,7 +58,7 @@ const ShowPharmacie = () => {
                     <Typography variant="h5" component="p">
                         Detail de la pharmacie
                     </Typography>
-                    <Button variant="contained" onClick={() => navigate("/pharmacies")}>
+                    <Button startIcon={<ArrowBack />} variant="contained" onClick={() => navigate("/pharmacies")}>
                         Retour
                     </Button>
                 </Stack>

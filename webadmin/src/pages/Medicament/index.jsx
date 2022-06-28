@@ -80,8 +80,15 @@ const ListeMedicament = () => {
                 customBodyRenderLite: (index, id) => {
                     return (
                         <>
-                            {medicaments[index].statut ? <Typography variant="p" component="p">Disponible</Typography> : <Typography variant="p" component="p">Non disponible</Typography>}
-
+                            {medicaments[index].statut ? (
+                                <Typography variant="p" component="p">
+                                    Disponible
+                                </Typography>
+                            ) : (
+                                <Typography variant="p" component="p">
+                                    Non disponible
+                                </Typography>
+                            )}
                         </>
                     );
                 },
@@ -120,17 +127,6 @@ const ListeMedicament = () => {
     const options = {
         filterType: "checkbox",
     };
-
-    const data = [
-        {
-            id: "0",
-            nom: "Paracetamol",
-            dose: "1000",
-            laboratoire: "Lana derms",
-            prix: "345678",
-            poids: "100",
-        },
-    ];
 
     return (
         <Page title="Liste des medicaments">

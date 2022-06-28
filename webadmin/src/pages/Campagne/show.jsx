@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import { useAuthContext } from "../../context/userContext";
 import axios from "axios";
+import { ArrowBack } from "@mui/icons-material";
 
 const ShowCampagne = () => {
     useEffect(() => {
@@ -77,7 +78,7 @@ const ShowCampagne = () => {
                     justifyContent="space-between"
                 >
                     <Typography variant="h5">Afficher une campagne</Typography>
-                    <Button variant="contained" onClick={() => navigate("/campagnes")}>
+                    <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate("/campagnes")}>
                         Retour
                     </Button>
                 </Stack>

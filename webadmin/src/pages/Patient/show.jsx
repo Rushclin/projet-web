@@ -1,3 +1,4 @@
+import { ArrowBack } from "@mui/icons-material";
 import {
     Card,
     Container,
@@ -22,31 +23,41 @@ import { useAuthContext } from "../../context/userContext";
 const ShowPatient = () => {
     // HOOKS
     useEffect(() => {
-        getOnePatient()
-    }, [])
-    const navigate = useNavigate()
-    const location = useLocation()
-    const { user } = useAuthContext()
+        getOnePatient();
+    }, []);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { user } = useAuthContext();
 
-    const id = location.state.id
-    const [patient, setPatient] = useState({})
+    const id = location.state.id;
+    const [patient, setPatient] = useState({});
 
     const getOnePatient = () => {
-        axios.get("https://hanniel-api.herokuapp.com/admin/one/patient/" + id, {
-            userId: user.userId,
-            headers: { Authorization: `Bearer ${user.token}` }
-        }).then((response) => {
-            setPatient(response.data.message)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
+        axios
+            .get("https://hanniel-api.herokuapp.com/admin/one/patient/" + id, {
+                userId: user.userId,
+                headers: { Authorization: `Bearer ${user.token}` },
+            })
+            .then((response) => {
+                setPatient(response.data.message);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
     return (
         <Page title="Afficher patient">
             <Container>
-                <Stack direction="row" mb={5} alignItems="center" justifyContent='space-between'>
+                <Stack
+                    direction="row"
+                    mb={5}
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
                     <Typography variant="h5">Afficher un patient</Typography>
-                    <Button variant='contained' onClick={() => navigate("/patients")}>Retour</Button>
+                    <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate("/patients")}>
+                        Retour
+                    </Button>
                 </Stack>
 
                 <Card>
@@ -66,7 +77,9 @@ const ShowPatient = () => {
                                     <TableBody>
                                         <TableRow>
                                             <TableCell>Noms et Prenoms</TableCell>
-                                            <TableCell>{patient.name + " " + patient.surname}</TableCell>
+                                            <TableCell>
+                                                {patient.name + " " + patient.surname}
+                                            </TableCell>
                                         </TableRow>
 
                                         <TableRow>

@@ -1,4 +1,19 @@
-import { Button, Card, CardMedia, Container, Grid, Stack, TableHead, Table, TableCell, TableContainer, TableRow, Typography, TableBody } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
+import {
+    Button,
+    Card,
+    CardMedia,
+    Container,
+    Grid,
+    Stack,
+    TableHead,
+    Table,
+    TableCell,
+    TableContainer,
+    TableRow,
+    Typography,
+    TableBody,
+} from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -41,13 +56,21 @@ const ShowHopital = (props) => {
                     alignItems="center"
                     justifyContent="space-between"
                 >
-                    <Typography variant="h5" component="p">Detail de l'hopital</Typography>
-                    <Button variant="contained" onClick={() => navigate("/hopital")}>Retour</Button>
+                    <Typography variant="h5" component="p">
+                        Detail de l'hopital
+                    </Typography>
+                    <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate("/hopital")}>
+                        Retour
+                    </Button>
                 </Stack>
                 <Card>
                     <Grid container>
                         <Grid item md={6}>
-                            <CardMedia component="img" image={hopital.logo} alt={hopital.name} />
+                            <CardMedia
+                                component="img"
+                                image={hopital.logo}
+                                alt={hopital.name}
+                            />
                         </Grid>
                         <Grid item md={6}>
                             <TableContainer>

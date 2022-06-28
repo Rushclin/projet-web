@@ -1,3 +1,4 @@
+import { Add, ArrowBack, RestoreRounded } from "@mui/icons-material";
 import {
     Alert,
     Button,
@@ -78,9 +79,11 @@ export default function CreerHopital() {
 
         if (!error) {
             const data = new FormData();
+            console.log("Debut data", data)
             data.append("hospital", JSON.stringify(hopital));
-            data.append("logo", image);
-            console.log(hopital);
+            data.append("image", image);
+            console.log("Hospital", data.get("hospital"))
+            console.log("Logo", data.get('logo'))
 
             axios
                 .post("https://hanniel-api.herokuapp.com/admin/c/hospital", data, {
@@ -111,6 +114,7 @@ export default function CreerHopital() {
                         onClick={() => {
                             navigate("/hopital");
                         }}
+                        startIcon={<ArrowBack />}
                     >
                         Retour
                     </Button>
@@ -219,6 +223,7 @@ export default function CreerHopital() {
                                 <Button
                                     variant="contained"
                                     type="submit"
+                                    startIcon={<Add />}
                                     style={{ margin: "10px" }}
                                     onClick={handleSubmit}
                                 >
@@ -228,6 +233,7 @@ export default function CreerHopital() {
                                     type="reset"
                                     variant="contained"
                                     color="error"
+                                    startIcon={<RestoreRounded />}
                                     onClick={handleReset}
                                 >
                                     Annuler

@@ -1,3 +1,4 @@
+import { ArrowBack } from "@mui/icons-material";
 import {
     Button,
     Card,
@@ -61,6 +62,7 @@ export default function UpdateHopital() {
                     <Typography variant="h5">Mise a jour hopital</Typography>
                     <Button
                         variant="contained"
+                        startIcon={<ArrowBack />}
                         onClick={() => {
                             navigate("/hopital");
                         }}

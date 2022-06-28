@@ -1,5 +1,5 @@
 import MUIDataTable from "mui-datatables";
-import { DeleteRounded, Edit } from "@mui/icons-material";
+import { DeleteRounded, Edit, PlusOne } from "@mui/icons-material";
 import { ButtonGroup, Card, Typography } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Button } from "@mui/material";
@@ -40,7 +40,6 @@ export default function ListePharmacie() {
             });
     };
 
-    console.log(user.token)
 
     const handleDelete = (id) => {
         confirm({
@@ -132,8 +131,9 @@ export default function ListePharmacie() {
                     <Button
                         variant="contained"
                         onClick={() => navigate("/pharmacies/create")}
+                        startIcon={<PlusOne />}
                     >
-                        Nouveau
+                        Nouvelle pharmacie
                     </Button>
                 </Stack>
 
