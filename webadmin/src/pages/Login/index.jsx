@@ -1,5 +1,13 @@
 import { VaccinesOutlined } from "@mui/icons-material";
-import { Alert, AlertTitle, Avatar, Checkbox, CircularProgress, FormControlLabel } from "@mui/material";
+import {
+    Alert,
+    AlertTitle,
+    Avatar,
+    Card,
+    Checkbox,
+    CircularProgress,
+    FormControlLabel,
+} from "@mui/material";
 import { Paper } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
@@ -11,7 +19,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import axios from "axios";
 import { useAuthContext } from "../../context/userContext";
-import { useConfirm } from "material-ui-confirm";
+import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+import styled from "@emotion/styled";
 
 const Copyright = (props) => {
     return (
@@ -27,13 +36,39 @@ const Copyright = (props) => {
         </Typography>
     );
 };
+// Ici
 
-export default function LoginPage() {
-    //HOOKS
+const FlexBox = styled(Box)(() => ({
+    display: "flex",
+    alignItems: "center",
+}));
+
+const JustifyBox = styled(FlexBox)(() => ({
+    justifyContent: "center",
+}));
+
+const ContentBox = styled(Box)(() => ({
+    height: "100%",
+    padding: "32px",
+    position: "relative",
+    background: "rgba(0, 0, 0, 0.01)",
+}));
+
+const Root = styled(JustifyBox)(() => ({
+    background: "#c7c7c7",
+    minHeight: "100% !important",
+    "& .card": {
+        maxWidth: 900,
+        borderRadius: 12,
+        margin: "1rem",
+    },
+}));
+
+const LoginPage = () => {
     const [user, setUser] = useState({ email: "", password: "" });
     const [message, setMessage] = useState("");
     const [error, setError] = useState(false);
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const AuthContext = useAuthContext();
 
@@ -43,8 +78,8 @@ export default function LoginPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setOpen(true)
-        setError(false)
+        setOpen(true);
+        setError(false);
         axios
             .post("https://hanniel-api.herokuapp.com/admin/signIn", user)
             .then((response) => {
@@ -53,126 +88,89 @@ export default function LoginPage() {
                     navigate("/dashboard");
                     AuthContext.update();
                 } else {
-                    setMessage(
-                        "Connexion non reussie, veuillez verifier votre login ou mot de passe"
-                    );
+                    setMessage("Connexion non reussie ");
                     setError(true);
                 }
             })
             .catch((error) => {
                 console.log(error);
-                setMessage("Erreur de connexion, veuillez verifier vos identifiants");
+                setMessage("Erreur de connexion");
                 setError(true);
-                setOpen(false)
+                setOpen(false);
             });
     };
 
     return (
-        <Page title="Login">
-            <Grid container component="main" sx={{ height: "50vh" }} style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
-                {/*   <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={6}
-                    sx={{
-                        backgroundImage: "url(https://source.unsplash.com/random)",
-                        backgroundRepeat: "no-repeat",
-                        backgroundColor: (t) =>
-                            t.palette.mode === "light"
-                                ? t.palette.grey[50]
-                                : t.palette.grey[900],
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}
-                /> */}
-
-                <Grid item xs={12} sm={8} md={4} elevation={10} component={Paper} square style={{ margin: '20px auto' }}>
-                    <Box
-                        sx={{
-                            my: 2,
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                            <VaccinesOutlined />
-                        </Avatar>
-
-                        <Typography
-                            variant="h5"
-                            component="h1"
-                            style={{ textTransform: "uppercase", margin: "1px" }}
-                        >
-                            Connexion administrateur
-                        </Typography>
-                        {
-                            error &&
-                            <Alert severity="error">
-                                <AlertTitle>Une erreur est survenue</AlertTitle>
-                                {message}
-                            </Alert>
-                        }
-                        <Box
-                            component="form"
-                            onSubmit={handleSubmit}
-                            style={{ width: "90%" }}
-                        >
-                            <TextField
-                                margin="normal"
-                                required
-                                type="email"
-                                fullWidth
-                                id="email"
-                                label="Entrez votre email"
-                                name="email"
-                                autoFocus
-                                value={user.email}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                type="password"
-                                fullWidth
-                                id="password"
-                                label="Entrez votre mot de passe"
-                                name="password"
-                                value={user.password}
-                                onChange={handleChange}
-                            />
-                            <FormControlLabel
-                                control={<Checkbox value="souvenir" color="primary" />}
-                                label="Se souvenir de moi"
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
-                                size="large"
-                            >
-                                {
-                                    open && <CircularProgress color="inherit" />
-                                }
-                                {
-                                    !open && "SE CONNECTER"
-                                }
-                            </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link to="" variant="body2">
-                                        Mot de passe oublie?
-                                    </Link>
-                                </Grid>
-                            </Grid>
-
-                            <Copyright sx={{ mt: 5 }} />
-                        </Box>
-                    </Box>
-                </Grid >
-            </Grid >
-        </Page >
+        <Root>
+            <Page title="Login">
+                <Card className="card">
+                    <Grid container>
+                        <Grid item md={12}>
+                            <ContentBox>
+                                <ValidatorForm onSubmit={handleSubmit}>
+                                    {message && (
+                                        <Alert severity="error" style={{ marginBottom: "10px" }}>
+                                            {message}
+                                        </Alert>
+                                    )}
+                                    <Typography
+                                        variant="h5"
+                                        component="p"
+                                        mb={4}
+                                        style={{ textAlign: "center" }}
+                                    >
+                                        Connexion admin
+                                    </Typography>
+                                    <TextValidator
+                                        sx={{ mb: 3, width: "100%" }}
+                                        variant="outlined"
+                                        size="small"
+                                        label="Email"
+                                        fullWidth
+                                        onChange={handleChange}
+                                        type="email"
+                                        name="email"
+                                        value={user.email}
+                                        validators={["required", "isEmail"]}
+                                        errorMessages={[
+                                            "Ce champ est obligatoire",
+                                            "Email non valide",
+                                        ]}
+                                    />
+                                    <TextValidator
+                                        sx={{ mb: "12px", width: "100%" }}
+                                        label="Mot de passe"
+                                        variant="outlined"
+                                        size="small"
+                                        onChange={handleChange}
+                                        name="password"
+                                        type="password"
+                                        value={user.password}
+                                        validators={["required"]}
+                                        errorMessages={["Ce champ est obligatoire"]}
+                                    />
+                                    <FlexBox mb={2} flexWrap="wrap">
+                                        <Box position="relative">
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                type="submit"
+                                                disabled={open}
+                                            >
+                                                {open && <CircularProgress size="10" />}
+                                                Se connecter
+                                            </Button>
+                                        </Box>
+                                    </FlexBox>
+                                </ValidatorForm>
+                                <Copyright />
+                            </ContentBox>
+                        </Grid>
+                    </Grid>
+                </Card>
+            </Page>
+        </Root>
     );
-}
+};
+
+export default LoginPage;

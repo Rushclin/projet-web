@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 // @mui
 import { alpha } from "@mui/material/styles";
 import {
@@ -15,6 +15,8 @@ import {
 import MenuPopover from "../../components/MenuPopover";
 // mocks_
 import account from "../../_mock/account";
+import { useAuthContext } from "../../context/userContext";
+import axios from "axios";
 
 // ----------------------------------------------------------------------
 
@@ -29,19 +31,34 @@ const MENU_OPTIONS = [
     icon: "eva:person-fill",
     linkTo: "#",
   },
-  {
-    label: "Parametres",
-    icon: "eva:settings-2-fill",
-    linkTo: "#",
-  },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const anchorRef = useRef(null);
+  useEffect(() => {
+    getAuthUser();
+  }, []);
 
   const [open, setOpen] = useState(null);
+  const [authUser, setAuthUser] = useState({});
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+  const getAuthUser = () => {
+    axios
+      .get("https://hanniel-api.herokuapp.com/admin/" + user.userId, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then((response) => {
+        console.log(response.data.message);
+        setAuthUser(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -49,6 +66,7 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+    //navigate("/");
   };
 
   return (
@@ -90,10 +108,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {authUser.name + " " + authUser.lastName}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {account.email}
+            {authUser.email}
           </Typography>
         </Box>
 

@@ -12,6 +12,7 @@ import {
 import { Box } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
+import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import { useAuthContext } from "../../context/userContext";
@@ -29,8 +30,8 @@ export default function CreerHopital() {
         phone: "",
         description: "",
     });
-    const [error, setError] = useState(false);
     const [image, setImage] = useState({});
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -48,7 +49,6 @@ export default function CreerHopital() {
             phone: "",
             description: "",
         });
-        setError(false);
     };
 
     const handleImage = (e) => {
@@ -57,46 +57,24 @@ export default function CreerHopital() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true)
 
-        if (hopital.name.trim().length == 0) {
-            setError(true);
-        }
-        if (hopital.email.trim().length == 0) {
-            setError(true);
-        }
-        if (hopital.latitude.trim().length == 0) {
-            setError(true);
-        }
-        if (hopital.longitude.trim().length == 0) {
-            setError(true);
-        }
-        if (hopital.bp.trim().length == 0) {
-            setError(true);
-        }
-        if (hopital.phone.trim().length == 0) {
-            setError(true);
-        }
+        const data = new FormData();
+        data.append("hospital", JSON.stringify(hopital));
+        data.append("image", image);
 
-        if (!error) {
-            const data = new FormData();
-            console.log("Debut data", data)
-            data.append("hospital", JSON.stringify(hopital));
-            data.append("image", image);
-            console.log("Hospital", data.get("hospital"))
-            console.log("Logo", data.get('logo'))
+        axios
+            .post("https://hanniel-api.herokuapp.com/admin/c/hospital", data, {
+                headers: { Authorization: `Bearer ${user.token}` },
+            })
+            .then((response) => {
+                console.log("Bien envoye");
+                navigate("/hopital");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
-            axios
-                .post("https://hanniel-api.herokuapp.com/admin/c/hospital", data, {
-                    headers: { Authorization: `Bearer ${user.token}` },
-                })
-                .then((response) => {
-                    console.log("Bien envoye");
-                    navigate("/hopital");
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
     };
 
     return (
@@ -121,125 +99,154 @@ export default function CreerHopital() {
                 </Stack>
 
                 <Card>
-                    <Box mx={2} my={2}>
-                        {error && (
-                            <Alert severity="error">Veuillez remplir tous les champs</Alert>
-                        )}
-                    </Box>
+                    <Box>
+                        <ValidatorForm onSubmit={handleSubmit}>
+                            <Grid container>
+                                <Grid item md={6} px={1}>
+                                    <TextValidator
+                                        required
+                                        onChange={handleChange}
+                                        value={hopital.name}
+                                        id="name"
+                                        name="name"
+                                        label="Nom l'hopital"
+                                        fullWidth
+                                        margin="normal"
+                                        validators={["required"]}
+                                        errorMessages={[
+                                            "Ce champ est obligatoire",
+                                        ]}
+                                    />
+                                    <TextValidator
+                                        required
+                                        onChange={handleChange}
+                                        value={hopital.longitude}
+                                        id="longitude"
+                                        name="longitude"
+                                        label="Longitude de l'hopital"
+                                        fullWidth
+                                        type="number"
+                                        margin="normal"
+                                        validators={["required"]}
+                                        errorMessages={[
+                                            "Ce champ est obligatoire",
+                                        ]}
+                                    />
+                                    <TextValidator
+                                        required
+                                        onChange={handleChange}
+                                        value={hopital.latitude}
+                                        id="latitude"
+                                        name="latitude"
+                                        label="Latitide de la l'hopital"
+                                        fullWidth
+                                        type="number"
+                                        margin="normal"
+                                        validators={["required"]}
+                                        errorMessages={[
+                                            "Ce champ est obligatoire",
+                                        ]}
+                                    />
+                                </Grid>
+                                <Grid item md={6} px={1}>
+                                    <TextValidator
+                                        required
+                                        onChange={handleChange}
+                                        value={hopital.bp}
+                                        id="bp"
+                                        name="bp"
+                                        label="Boite postale de la l'hopital"
+                                        fullWidth
+                                        margin="normal"
+                                        validators={["required"]}
+                                        errorMessages={[
+                                            "Ce champ est obligatoire",
+                                        ]}
+                                    />
+                                    <TextValidator
+                                        required
+                                        onChange={handleChange}
+                                        value={hopital.email}
+                                        id="email"
+                                        name="email"
+                                        label="Email de la l'hopital"
+                                        fullWidth
+                                        type="email"
+                                        margin="normal"
+                                        validators={["required", "isEmail"]}
+                                        errorMessages={[
+                                            "Ce champ est obligatoire",
+                                            "Email non valide"
+                                        ]}
+                                    />
+                                    <TextField
+                                        id="logo"
+                                        name="logo"
+                                        fullWidth
+                                        type="file"
+                                        margin="normal"
+                                        onChange={handleImage}
+                                        value={hopital.logo}
+                                    />
+                                </Grid>
+                                <Grid item md={12} px={1}>
+                                    <TextValidator
+                                        required
+                                        onChange={handleChange}
+                                        value={hopital.phone}
+                                        id="phone"
+                                        name="phone"
+                                        label="Numero de telephone l'hopital"
+                                        fullWidth
+                                        type="number"
+                                        margin="normal"
+                                        validators={["required", "matchRegexp:^[0-9]{9,}"]}
+                                        errorMessages={[
+                                            "Ce champ est obligatoire",
+                                            "9 chiffres au minimum"
+                                        ]}
+                                    />
+                                </Grid>
+                                <Grid item md={12} px={1}>
+                                    <TextValidator
+                                        onChange={handleChange}
+                                        value={hopital.description}
+                                        id="description"
+                                        name="description"
+                                        label="Description de la l'hopital"
+                                        fullWidth
+                                        rows={2}
+                                        multiline
+                                        margin="normal"
+                                        validators={["required",]}
+                                        errorMessages={[
+                                            "Ce champ est obligatoire",
+                                        ]}
+                                    />
 
-                    <Box component="form">
-                        <Grid container>
-                            <Grid item md={6} px={1}>
-                                <TextField
-                                    required
-                                    onChange={handleChange}
-                                    value={hopital.name}
-                                    id="name"
-                                    name="name"
-                                    label="Nom l'hopital"
-                                    fullWidth
-                                    margin="normal"
-                                />
-                                <TextField
-                                    required
-                                    onChange={handleChange}
-                                    value={hopital.longitude}
-                                    id="longitude"
-                                    name="longitude"
-                                    label="Longitude de l'hopital"
-                                    fullWidth
-                                    margin="normal"
-                                />
-                                <TextField
-                                    required
-                                    onChange={handleChange}
-                                    value={hopital.latitude}
-                                    id="latitude"
-                                    name="latitude"
-                                    label="Latitide de la l'hopital"
-                                    fullWidth
-                                    margin="normal"
-                                />
+                                </Grid>
+                                <Grid item md={12} px={1} py={2}>
+                                    <Button
+                                        variant="contained"
+                                        type="submit"
+                                        startIcon={<Add />}
+                                        style={{ margin: "10px" }}
+                                        disabled={loading}
+                                    >
+                                        Sauvegarder
+                                    </Button>
+                                    <Button
+                                        type="reset"
+                                        variant="contained"
+                                        color="error"
+                                        startIcon={<RestoreRounded />}
+                                        onClick={handleReset}
+                                    >
+                                        Annuler
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item md={6} px={1}>
-                                <TextField
-                                    required
-                                    onChange={handleChange}
-                                    value={hopital.bp}
-                                    id="bp"
-                                    name="bp"
-                                    label="Boite postale de la l'hopital"
-                                    fullWidth
-                                    margin="normal"
-                                />
-                                <TextField
-                                    required
-                                    onChange={handleChange}
-                                    value={hopital.email}
-                                    id="email"
-                                    name="email"
-                                    label="Email de la l'hopital"
-                                    fullWidth
-                                    type="email"
-                                    margin="normal"
-                                />
-                                <TextField
-                                    required
-                                    id="logo"
-                                    name="logo"
-                                    fullWidth
-                                    type="file"
-                                    margin="normal"
-                                    onChange={handleImage}
-                                    value={hopital.logo}
-                                />
-                            </Grid>
-                            <Grid item md={12} px={1}>
-                                <TextField
-                                    required
-                                    onChange={handleChange}
-                                    value={hopital.phone}
-                                    id="phone"
-                                    name="phone"
-                                    label="Numero de telephone l'hopital"
-                                    fullWidth
-                                    margin="normal"
-                                />
-                            </Grid>
-                            <Grid item md={12} px={1}>
-                                <TextField
-                                    onChange={handleChange}
-                                    value={hopital.description}
-                                    id="description"
-                                    name="description"
-                                    label="Description de la l'hopital"
-                                    fullWidth
-                                    rows={2}
-                                    multiline
-                                    margin="normal"
-                                />
-                            </Grid>
-                            <Grid item md={12} px={1} py={2}>
-                                <Button
-                                    variant="contained"
-                                    type="submit"
-                                    startIcon={<Add />}
-                                    style={{ margin: "10px" }}
-                                    onClick={handleSubmit}
-                                >
-                                    Sauvegarder
-                                </Button>
-                                <Button
-                                    type="reset"
-                                    variant="contained"
-                                    color="error"
-                                    startIcon={<RestoreRounded />}
-                                    onClick={handleReset}
-                                >
-                                    Annuler
-                                </Button>
-                            </Grid>
-                        </Grid>
+                        </ValidatorForm>
                     </Box>
                 </Card>
             </Container>

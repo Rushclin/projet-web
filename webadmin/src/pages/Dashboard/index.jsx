@@ -1,6 +1,7 @@
 import { Container, Grid } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import { useAuthContext } from "../../context/userContext";
 import AppWidget from "./Widgets/AppWidget";
@@ -11,6 +12,7 @@ const Dashboard = () => {
     getNbrePatient();
     getNbreHopital();
     getNbreCampagne();
+    testUser()
   }, []);
 
   const [nbrPharmacie, setNbrPharmaci] = useState(0);
@@ -18,6 +20,15 @@ const Dashboard = () => {
   const [nbrHopital, setNbrHopital] = useState(0);
   const [nbrCampagne, setNbrCampagne] = useState(0);
   const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+  const testUser = () => {
+    if (!user) {
+      navigate("/")
+    } else {
+      console.log("Authentifie")
+    }
+  }
 
   // Decompter le nombre de pharmacie
   const getNbrPharmacie = () => {
