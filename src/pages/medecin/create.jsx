@@ -28,8 +28,9 @@ export default function CreerMedecin() {
         description: '', 
         hospitalId: user.userId, 
         name : '', 
-       grade: '',
+        grade: '',
         sexe: '',
+        password:'123456',
    })
 
    const [image,setImage] = useState({})
@@ -39,7 +40,7 @@ export default function CreerMedecin() {
    const [loading,setLoading] = useState(false)
    const navigate = useNavigate();
    const handleChange = (e) => {
-     setMedecin({ ...medecin, [e.target.name]: e.target.value});
+     setMedecin(prevstate => ({ ...prevstate, [e.target.name] : e.target.value}));
    }
    console.log(medecin)
    const handleReset = () => {
@@ -49,8 +50,9 @@ export default function CreerMedecin() {
         description: '', 
         hospitalId: user.userId, 
         name : '', 
-       grade: '',
+        grade: '',
         sexe: '',
+        password:'123456',
 
     })
    }
@@ -71,6 +73,7 @@ export default function CreerMedecin() {
         headers: {Authorization: `Bearer ${user.token}`}
     }).then((response) => {
         console.log("La requete a marchee")
+        navigate("/medecin/") 
     }).catch((error) => {
         console.log(error)
     })
@@ -134,9 +137,8 @@ export default function CreerMedecin() {
                                     label="date de naissance du medecin"
                                     fullWidth
                                     margin="normal"
-                                    validators={["required"]}
-                                    errorMessage={["cechamps est obligatoire"]}
-                                />
+                                    type="date"
+                                   />
                                  <TextValidator
                                     required
                                     id="sexe"

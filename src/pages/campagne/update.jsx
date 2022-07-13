@@ -47,23 +47,6 @@ export default function UpdateCampagne() {
     })
   }
 
- 
-     const updateCampagne = () =>{
-        const data =new FormData()
-
-        data.append("campagne",JSON.stringify(campagne))
-        data.append("image",image)
-
-        axios.put(`https://hanniel-api.herokuapp.com/hospital/u/campaign/${id}`, data, {
-            userId: user.userId,  
-            headers: {Authorization: `Bearer ${user.token}`}
-        }).then((response) => {
-            console.log("La campagne  à ete modifier")
-        }).catch((error) => {
-            console.log(error)
-        })
-      
-    }
     const handleImage = (e) => {
         setImage(e.target.files[0])
     }
@@ -74,6 +57,25 @@ export default function UpdateCampagne() {
     const handleSubmit = (e) => {
         e.preventDefault()
         updateCampagne()
+    }
+
+
+    const updateCampagne = () =>{
+        const data =new FormData()
+
+        data.append("campaign",JSON.stringify(campagne))
+        data.append("image",image)
+
+        axios.put(`https://hanniel-api.herokuapp.com/hospital/u/campaign/${id}`, data, {
+            userId: user.userId,  
+            headers: {Authorization: `Bearer ${user.token}`}
+        }).then((response) => {
+            console.log("La campagne  à ete modifier")
+            navigate("/campagne/") 
+        }).catch((error) => {
+            console.log(error)
+        })
+      
     }
 
     console.log(campagne)

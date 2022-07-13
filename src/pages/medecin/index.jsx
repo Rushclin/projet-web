@@ -25,7 +25,7 @@ export default function ListeMedecin() {
 
 
     useEffect(()=> {
-      //  getMedecin()
+      getMedecin()
     }, [])
     const navigate = useNavigate()
     
@@ -43,7 +43,6 @@ export default function ListeMedecin() {
     })
         .then((resp) => {
             axios.delete("https://hanniel-api.herokuapp.com/hospital/d/medecin/"+id, {
-             
                 headers: {Authorization: `Bearer ${user.token}`}
             }).then((response) => {
                 console.log("Bien supprimé")
@@ -54,8 +53,8 @@ export default function ListeMedecin() {
             console.log("On a refuse")
         })
     }
-        // Recuperation des campagnes                                                                                                                                                                                                                                                                                                                                                                   
-        const getCampage = () => {
+        // Recuperation des medecins                                                                                                                                                                                                                                                                                                                                                                 
+        const getMedecin = () => {
             axios.get("https://hanniel-api.herokuapp.com/hospital/a/medecin/"+ user.userId, {
                 userId: user.userId, 
                 headers: {Authorization: `Bearer ${user.token}`}
@@ -68,7 +67,7 @@ export default function ListeMedecin() {
         }
     
     
-
+        console.log(medecin);
     // En utilisant le MUIDatatable
     // DEBUT
     const columns = [
@@ -161,7 +160,7 @@ export default function ListeMedecin() {
                     <Scrollbar>
                         <MUIDataTable
                             title={"Liste des medecins"}
-                            data={data}
+                            data={medecin}
                             columns={columns}
                             options={options}
                         />

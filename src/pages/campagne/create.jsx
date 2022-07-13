@@ -72,10 +72,13 @@ export default function CreerCampagne() {
             headers: {Authorization: `Bearer ${user.token}`}
         }).then((response) => {
             console.log("La requete a marchee")
-        }).catch((error) => {
+            navigate("/campagne/") 
+    }).catch((error) => {
             console.log(error)
         })
         console.log("On soumet le formulaire")
+
+
     }
 
     return (
@@ -198,7 +201,7 @@ export default function CreerCampagne() {
                                     startIcon={<Add />}
                                     style={{ margin: "10px" }}
                                     onClick={ handleSubmit}
-                                    disabled={loading}
+                                    disabled={ loading }
                                     >
                                 
                                     Sauvegarder
