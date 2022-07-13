@@ -27,6 +27,7 @@ const NouvellePharmacie = () => {
         pb: "",
         email: "",
         password: "12345678",
+        quantiteMedicament: 0
     });
 
     // Pur gerer les erreur de saisie

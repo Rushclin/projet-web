@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 // material
 import { styled } from "@mui/material/styles";
@@ -21,6 +21,8 @@ import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
 //
 import navConfig from "./NavConfig";
+import { useAuthContext } from "../../context/userContext";
+import axios from "axios";
 
 // ----------------------------------------------------------------------
 
@@ -51,15 +53,32 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [authUser, setAuthUser] = useState({});
+  const { user } = useAuthContext();
 
   const isDesktop = useResponsive("up", "lg");
 
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
+      getAuthUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  const getAuthUser = () => {
+    axios
+      .get("https://hanniel-api.herokuapp.com/admin/" + user.userId, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then((response) => {
+        console.log(response.data.message);
+        setAuthUser(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const renderContent = (
     <Scrollbar
@@ -85,10 +104,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                {account.displayName}
+                {authUser.name + " " + authUser.lastName}
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                {account.role}
+                {authUser.email}
               </Typography>
             </Box>
           </AccountStyle>
