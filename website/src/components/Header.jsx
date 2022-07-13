@@ -14,16 +14,10 @@ const Header = () => {
 
                 <nav className="navbar">
                     <ul className="navbar-list">
-                        {/*  <li>
-                            <a href="" className="navbar-link">Index</a>
-                        </li>
-                        <li>
-                            <a href="" className="navbar-link">Home</a>
-                        </li> */}
                     </ul>
 
                     <div className="header-actions">
-                        <a href="" className="header-action-link">GET STARTED</a>
+                        <a href="" className="header-action-link">TELECHARGER ICI</a>
                     </div>
                 </nav>
             </div>

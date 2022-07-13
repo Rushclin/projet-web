@@ -136,107 +136,52 @@ main {
   text-align: center;
 }
 
-.desc {
-  padding: 125px 0 var(--section-padding);
-  background: var(--white-2);
-}
-
-.desc-content {
-  margin-bottom: 80px;
-}
-
-.desc-title {
-  margin-bottom: 20px;
-}
-
-.desc-text {
-  font-size: var(--fs-4);
-  font-weight: var(--fw-500);
-  line-height: 1.8;
-  margin-bottom: 40px;
-}
-
-.desc-image img {
-  width: 100%;
-
-}
 
 .text-primary {
   color: var(--primary-color);
 }
 
-.detail {
-  padding-block: var(--section-padding);
+footer {
+  background: hsl(244, 17%, 19%);
+  color: #FFFF;
 }
 
-.detail-content {
-  margin-bottom: 30px;
+.about {
+  background: var(--white-2);
+  padding-top: 70px;
+  padding-bottom: 70px;
 }
 
-.detail-icon {
-  width: 60px;
-  height: 60px;
-  background: var(--lavender-web);
-  display: grid;
-  place-items: center;
-  color: var(--majorelle-blue);
-  font-size: 40px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.detail-title {
-  margin-bottom: 10px;
-}
-
-.detail-text {
-  color: var(--cool-gray);
-  font-weight: var(--fw-500);
-  line-height: 1.8;
-  margin-bottom: 20px;
-}
-
-.detail-list {
-  display: grid;
-  gap: 20px;
-}
-
-.detail-card {
-  padding: 20px;
+.card {
+  border-radius: 5px;
+  border: solid 0px rgb(244, 236, 236);
+  border-width: '1px';
+  background: var(--blanc);
+  padding: 10px;
+  box-shadow: 0px 0px 1px rgb(159, 152, 152);
+  transition: 0.5s ease-in-out;
+  font-weight: 200;
   text-align: center;
-  box-shadow: 0 3px 12px hsla(233, 77%, 10%, 0.06);
-  border-radius: 4px;
-  transition: var(--transition);
+  padding-bottom: 20px;
 }
 
-.detail-card:hover {
+.card-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: var(--primary-color)
+}
+
+.card-title:hover {
+  color: var(--blanc);
+}
+
+.card:is(:hover, :focus) {
   background: var(--primary-color);
-  transform: translateY(-5px);
-  box-shadow: 0 5px 18px hsla(245, 67%, 59%, 0.4);
+  color: var(--blanc);
+  transition: 0.5s ease;
+  transform: translateY(-2px);
+  cursor: pointer;
 }
-
-.detail-card .card-icon {
-  width: 60px;
-  height: 60px;
-  background: var(--lavender-web);
-  display: grid;
-  place-items: center;
-  color: var(--majorelle-blue);
-  font-size: 28px;
-  border-radius: 50%;
-  margin-inline: auto;
-  margin-bottom: 20px;
-  transition: var(--transition);
-}
-
-.detail-card:hover .card-icon {
-  background: hsla(0, 0%, 100%, 0.15);
-  color: var(--white);
-  box-shadow: 0 0 0 8px hsla(0, 0%, 100%, 0.05);
-}
-
-
-
 
 
 
@@ -421,6 +366,10 @@ main {
     max-width: 600px;
     margin-inline: auto;
   }
+
+  .footer-link-box {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (min-width: 900px) {
@@ -509,17 +458,6 @@ main {
 .form-text span {
   display: inline-block;
   font-size: 20px;
-}
-
-.email-field {
-  background: var(--ghost-white-2);
-  padding: 17px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.email-field:focus {
-  outline-color: var(--majorelle-blue);
 }
 
 .hero .btn-primary {
