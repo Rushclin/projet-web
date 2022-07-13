@@ -59,9 +59,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const isDesktop = useResponsive("up", "lg");
 
   useEffect(() => {
+    getAuthUser();
     if (isOpenSidebar) {
       onCloseSidebar();
-      getAuthUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
