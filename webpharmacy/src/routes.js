@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import ListeMedicament from "./pages/Medicaments";
 import NouveauMedicament from "./pages/Medicaments/create";
 import UpdateMedicament from "./pages/Medicaments/update";
+import Profile from "./pages/profile"
 
 export default function Router() {
   return useRoutes([
@@ -16,6 +17,7 @@ export default function Router() {
         { path: "medicament", element: <ListeMedicament /> },
         { path: "medicament/create", element: <NouveauMedicament /> },
         { path: "medicament/update", element: <UpdateMedicament /> },
+        { path: "profile", element: <Profile /> },
       ],
     },
     // Pour la navigation vers la page d'erreur

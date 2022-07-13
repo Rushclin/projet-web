@@ -1,10 +1,5 @@
 import MUIDataTable from "mui-datatables";
-import {
-    Button,
-    ButtonGroup,
-    Card,
-    Container,
-} from "@mui/material";
+import { Button, ButtonGroup, Card, Container, } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
@@ -98,16 +93,16 @@ export default function ListeMedicament() {
         }
     ];
 
-    const data = [
-        { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
-        { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
-        { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
-        { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
-        { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
-        { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
-        { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
-        { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
-    ];
+    // const data = [
+    //     { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
+    //     { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
+    //     { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
+    //     { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
+    //     { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
+    //     { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
+    //     { id: "0", nom: "Paracetamol", dose: "100 mg", laboratoire: "LANA DEV", prix: "200 FR", poids: "12 mg", statut: true },
+    //     { id: "1", nom: "Mebendazole", dose: "150 mg", laboratoire: "FLUTTER DEV", prix: "500 FR", poids: "12 mg", statut: true },
+    // ];
 
     const options = {
         filterType: 'checkbox',
@@ -129,7 +124,7 @@ export default function ListeMedicament() {
                     <Scrollbar>
                         <MUIDataTable
                             title={"Liste des medicaments"}
-                            data={data}
+                            // data={data}
                             columns={columns}
                             options={options}
                         />
