@@ -104,7 +104,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                {authUser.name + " " + authUser.lastName}
+                {authUser.name}
+                {" "}
+                {authUser.lastName}
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 {authUser.email}
