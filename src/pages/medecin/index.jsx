@@ -7,31 +7,75 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import Scrollbar from "../../components/Scrollbar";
 //import StackComponent from "../components/StackComponent";
 import { DeleteRounded, Edit, PlusOne } from "@mui/icons-material";
+import { useAuthContext } from "../../context/userContext";
+import axios from "axios";
+import { useConfirm } from "material-ui-confirm";
+import CreerMedecin from "./create";
 
-export default function ListeMedicament() {
+export default function ListeMedecin() {
     // HOOKS
+    const [medecin, setMedecin] = useState([])
+   
+
+
+    useEffect(()=> {
+      //  getMedecin()
+    }, [])
     const navigate = useNavigate()
+    
+    const {user} = useAuthContext()
+    const confirm = useConfirm()
+    const [error,setError] = useState(false)
+    const [data,setData] = useState(false)
+  
+
+
+    const handleDelete = (id) => {
+      
+        confirm({description: "Etes-vous sur de bien vouloir supprimer?"
+    
+    })
+        .then((resp) => {
+            axios.delete("https://hanniel-api.herokuapp.com/hospital/d/medecin/"+id, {
+             
+                headers: {Authorization: `Bearer ${user.token}`}
+            }).then((response) => {
+                console.log("Bien supprimé")
+            }).catch((error) => {
+                console.log(error)
+            })
+        }).catch((error) => {
+            console.log("On a refuse")
+        })
+    }
+        // Recuperation des campagnes                                                                                                                                                                                                                                                                                                                                                                   
+        const getCampage = () => {
+            axios.get("https://hanniel-api.herokuapp.com/hospital/a/medecin/"+ user.userId, {
+                userId: user.userId, 
+                headers: {Authorization: `Bearer ${user.token}`}
+            }).then((response) => {
+                setMedecin(response.data.message)
+                //console.log(response.data.message)
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    
+    
 
     // En utilisant le MUIDatatable
     // DEBUT
     const columns = [
+ 
         {
-            name: "id",
-            label: "ID",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "nom",
-            label: "Nom",
+            name: "name",
+            label: "Nom medecin",
             options:{
                 filter: true,
                 sort: true,
@@ -39,16 +83,21 @@ export default function ListeMedicament() {
         },
 
         {
-            name: "prenom",
-            label: "Prenom",
-            options:{
+            name: "dateNaiss",
+            label: "Date Naissance",
+            options: {
                 filter: true,
-                sort: true,
+                sort: false,
             }
         },
-        
-      
-            
+        {
+            name: "description",
+            label: "Description",
+            options: {
+                filter: true,
+                sort: false,
+            }
+        },
         
         {
             name: "grade",
@@ -78,7 +127,7 @@ export default function ListeMedicament() {
                             <Button size="small" variant='contained' onClick={() => { navigate("/medecin/update") }}>
                                 <Edit />
                             </Button>
-                            <Button size="small" variant='contained' color="error" onClick={() => window.alert(`"Supprimer" ${dataIndex}`)}>
+                            <Button size="small" variant='contained' color="error" onClick={() => handleDelete(medecin[dataIndex].id)}>
                                 <DeleteRounded />
                             </Button>
                         </ButtonGroup>
@@ -88,21 +137,12 @@ export default function ListeMedicament() {
             }
         }
     ];
-    const data = [
-        { id: "0", nom: "Sonfack",     prenom: "Louis",    grade: "infirmier chef", statut: true },
-        { id: "1", nom: "TONFACK",     prenom: "Loenard",   grade: "docteur",        statut: true },
-        { id: "0", nom: "AZANGUEZET",  prenom: "Leo",       grade: "specialiste",    statut: true },
-        { id: "1", nom: "TCHOMBA",     prenom: "Juspin",   grade: "stagier",        statut: true },
-        { id: "0", nom: "MAPEMO",      prenom: "Vanessa",    grade: "infirmier ",     statut: true },
-        { id: "1", nom: "KOALY",       prenom: "Jessica",    grade: "infirmier ",     statut: true },
-        { id: "0", nom: "MaGA",        prenom: "Ines",       grade: "stagiaire",      statut: true },
-        { id: "0", nom: "DONGMO",     prenom: "Laura",       grade: "infirmier chef", statut: true },
-       
-    ]
     const options = {
         filterType: 'checkbox',
     };
-    //fin
+
+   
+  
     return (
         <Page title="Liste Des Medecin">
             <Container>

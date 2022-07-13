@@ -29,13 +29,16 @@ export default function ListeMedicament() {
     const {user} = useAuthContext()
     const confirm = useConfirm()
     const [error,setError] = useState(false)
-
+  
 
     const handleDelete = (id) => {
-        console.log("On a cliaue sur delete"+id)
-        confirm({description: "Suppression du contenu"}).then((resp) => {
+      
+        confirm({description: "Etes-vous sur de bien vouloir supprimer?"
+    
+    })
+        .then((resp) => {
             axios.delete("https://hanniel-api.herokuapp.com/hospital/d/campaign/"+id, {
-                userId: user.userId, 
+             
                 headers: {Authorization: `Bearer ${user.token}`}
             }).then((response) => {
                 console.log("Bien supprimé")
@@ -96,7 +99,7 @@ export default function ListeMedicament() {
                     return (
                         <>
                             <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                                <Button size="small" variant='contained' onClick={() => { navigate("/campagne/update") }}>
+                                <Button size="small" variant='contained' onClick={() => { navigate("/campagne/update", {state:{id:campagnes[dataIndex].id}}) }}>
                                     <Edit />
                                 </Button>
                                 <Button size="small" variant="contained" color="secondary">

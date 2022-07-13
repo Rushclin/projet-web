@@ -17,6 +17,9 @@ import Page from "../../components/Page";
 import { useAuthContext } from "../../context/userContext";
 
 export default function UpdateCampagne() {
+    useEffect(()=> {
+        getOneCampagne()
+    }, [])
     const [data, setData] = useState({});
     const location = useLocation();
     const { user } =useAuthContext()
@@ -31,23 +34,49 @@ export default function UpdateCampagne() {
         name : '', 
         responsable: '', 
     })
-  useEffect(()=>{
-    putCampagne();
-},[])
-     const putCampagne = () =>{
-        axios.put("https://hanniel-api.herokuapp.com/hospital/u/campaign/:idCampaign", data, {
-            /* userId: user.userId,  */
+   const [image, setImage] = useState({})
+
+  const getOneCampagne = (e) => { 
+    axios.get("https://hanniel-api.herokuapp.com/hospital/g/campaign/"+id, {
+        userId : user.userId,
+        headers: {Authorization: `Bearer ${user.token}`}
+    }).then((response) => {
+        setCampagne(response.data.message)
+    }).catch((error) => {
+        console.log(error)
+    })
+  }
+
+ 
+     const updateCampagne = () =>{
+        const data =new FormData()
+
+        data.append("campagne",JSON.stringify(campagne))
+        data.append("image",image)
+
+        axios.put(`https://hanniel-api.herokuapp.com/hospital/u/campaign/${id}`, data, {
+            userId: user.userId,  
             headers: {Authorization: `Bearer ${user.token}`}
         }).then((response) => {
-            setCampagne(response.data.message)
+            console.log("La campagne  à ete modifier")
         }).catch((error) => {
             console.log(error)
         })
       
     }
+    const handleImage = (e) => {
+        setImage(e.target.files[0])
+    }
     const handleChange = (e) =>{
         setCampagne({ ...campagne, [e.target.name]: e.target.value})
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        updateCampagne()
+    }
+
+    console.log(campagne)
     console.log(campagne)
     return (
         <Page title="Mise a jour hoptital">
@@ -89,6 +118,7 @@ export default function UpdateCampagne() {
                                     label="Nom de la campagne"
                                     fullWidth
                                     margin="normal"
+                                    onChange={handleChange}
                                 />
                                 
                                 <TextField
@@ -100,17 +130,10 @@ export default function UpdateCampagne() {
                                     rows={2}
                                     multiline
                                     margin="normal"
+                                    onChange={handleChange}
                                 />
                                  
-                                <TextField
-                                    required
-                                    id="dateBegin"
-                                    name="dateBegin"
-                                    value={campagne.dateBegin}
-                                    label="Date de debut de la campagne"
-                                    fullWidth
-                                    margin="normal"
-                                />
+                               
                                 
                             </Grid>
                             <Grid item md={6} px={1}>
@@ -121,24 +144,41 @@ export default function UpdateCampagne() {
                                     label="responsable de la campagne"
                                     fullWidth
                                     margin="normal"
+                                    value={campagne.responsable}
+                                    onChange={handleChange}
+                                    
                                 />
                                 <TextField
                                     required
                                     id="image"
-                                    value={campagne.image}
                                     name="image"
                                     fullWidth
                                     type="file"
                                     margin="normal"
+                                   /*  onChange={handleImage}
+                                    value={image} */
+                                />
+                                 <TextField
+                                    required
+                                    id="dateBegin"
+                                    name="dateBegin"
+                                    value={campagne.dateBegin}
+                                    label="Date de debut de la campagne"
+                                    fullWidth
+                                    margin="normal"
+                                    onChange={handleChange}
+                                    type="date"
                                 />
                                   <TextField
                                     required
                                     id="dateEnd"
                                     value={campagne.dateEnd}
+                                    onChange={handleChange}
                                     name="dateEnd"
                                     label="Date de la fin de la campagne"
                                     fullWidth
                                     margin="normal"
+                                    type="date"
                                 />
                             </Grid>
                             <Grid item md={12} px={1} py={2}>
@@ -146,6 +186,7 @@ export default function UpdateCampagne() {
                                     variant="contained"
                                     type="submit"
                                     style={{ margin: "10px" }}
+                                    onClick={handleSubmit}
                                 >
                                     Modifier
                                 </Button>

@@ -20,7 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import { useAuthContext } from "../../context/userContext";
 
-const ShowHopital = (props) => {
+const ShowCampagne = (props) => {
     const location = useLocation();
     const { user } = useAuthContext();
     const [campagne, setCampagne] = useState({});
@@ -33,7 +33,7 @@ const ShowHopital = (props) => {
 
     const  putCampagne = () => {
         
-        axios.put("https://hanniel-api.herokuapp.com/hospital/u/campaign/:idCampaign" + id, {
+        axios.put("https://hanniel-api.herokuapp.com/hospital/u/campaign/" + id, {
                 userId: user.userId,
                 headers: { Authorization: `Bearer ${user.token}` },
             })
@@ -60,7 +60,7 @@ const ShowHopital = (props) => {
                         Detail sur les campagnes
                     </Typography>
                     <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate("/campagne")}>
-                        Retour
+                        Retour à la page d' accueil
                     </Button>
                 </Stack>
                 <Card>

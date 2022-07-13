@@ -10,6 +10,8 @@ import CreerMedecin from "./pages/medecin/create";
 import UpdateMedecin from "./pages/medecin/update";
 import ListeMedecin from "./pages/medecin";
 import LoginPage from "./pages/Login";
+import ShowCampagne from "./pages/medecin/show";
+import ShowMedecin from "./pages/medecin/show";
 
 
 // ----------------------------------------------------------------------
@@ -27,11 +29,12 @@ export default function Router() {
         { path: "campagne", element: <ListeCampagne /> },
         { path: "campagne/create", element: <CreerCampagne /> },
         { path: "campagne/update", element: <UpdateCampagne /> },
+        {path: "campagne/show", element:   <ShowCampagne /> }, 
          // MEDECIN
          { path: "medecin", element: <ListeMedecin /> },
          { path: "medecin/create", element: <CreerMedecin /> },
          { path: "medecin/update", element: <UpdateMedecin /> },
- 
+          {path:"medecin/show", element:   <ShowMedecin /> }, 
       ],
     },
     {

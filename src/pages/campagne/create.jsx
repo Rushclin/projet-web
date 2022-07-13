@@ -11,6 +11,7 @@ import {
 import { Box } from "@mui/material";
 import axios from "axios";
 import { ca } from "date-fns/locale";
+import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
@@ -107,10 +108,11 @@ export default function CreerCampagne() {
                         </Typography>
                     </Box>
 
-                    <Box component="form">
+                    <Box >
+                    <ValidatorForm onSubmit={handleSubmit}>
                         <Grid container>
                             <Grid item md={6} px={1}>
-                                <TextField
+                                <TextValidator
                                     required
                                     onChange={handleChange}
                                     value={campagne.name}
@@ -122,7 +124,8 @@ export default function CreerCampagne() {
                                     validators={["required"]}
                                     errorMessage={["cechamps est obligatoire"]}
                                 />
-                                  <TextField
+                                  <TextValidator
+                                   required
                                       onChange={handleChange}
                                     id="description"
                                     value={campagne.description}
@@ -136,7 +139,7 @@ export default function CreerCampagne() {
                                     errorMessage={["cechamps est obligatoire"]}
                                 />
                                  
-                                <TextField
+                                <TextValidator
                                     required
                                     onChange={handleChange}
                                     id="dateBegin"
@@ -145,12 +148,12 @@ export default function CreerCampagne() {
                                     label="date de debut de la campagne"
                                     fullWidth
                                     margin="normal"
-                                    validators={["required"]}
-                                    errorMessage={["cechamps est obligatoire"]}
+                                    type="date"
+                                    
                                 />
                                   </Grid>
                                   <Grid item md={6} px={1}>
-                            <TextField
+                                  <TextValidator
                                     required
                                     onChange={handleChange}
                                     id="responsable"
@@ -163,7 +166,7 @@ export default function CreerCampagne() {
                                     errorMessage={["cechamps est obligatoire"]}
                                 />
                              
-                                  <TextField
+                                  <TextValidator
                                     required
                                     onChange={handleChange}
                                     id="dateEnd"
@@ -172,8 +175,10 @@ export default function CreerCampagne() {
                                     label="date de la fin de la campagne"
                                     fullWidth
                                     margin="normal"
+                                    type="date"
                                 />
-                              <TextField
+                                   
+                              <TextValidator
                                     required
                                     onChange={handleImage}
                                     id="image"
@@ -195,7 +200,7 @@ export default function CreerCampagne() {
                                     onClick={ handleSubmit}
                                     disabled={loading}
                                     >
-                                >
+                                
                                     Sauvegarder
                                 </Button>
                                 <Button type="reset" variant="contained" color="error"
@@ -205,6 +210,7 @@ export default function CreerCampagne() {
                                 </Button>
                             </Grid>
                         </Grid>
+                        </ValidatorForm>
                     </Box>
                 </Card>
             </Container>

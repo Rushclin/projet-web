@@ -8,12 +8,45 @@ import {
     Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
+import { useAuthContext } from "../../context/userContext";
 
 export default function UpdateMedecin() {
+    const [data, setData] = useState({});
+    const location = useLocation();
+    const { user } =useAuthContext()
     const navigate = useNavigate();
+    const id = location.state.id
+    const [medecin, setMedecin] = useState({
+        dateNaiss: '', 
+        numero: '',
+        description: '', 
+        hospitalId: user.userId, 
+        name : '', 
+       grade: '',
+        sexe: '',
+    })
+    useEffect(()=>{
+     putMedecin();
+    },[])
+         const putMedecin = () =>{
+            axios.put("https://hanniel-api.herokuapp.com/hospital/", data, {
+                /* userId: user.userId,  */
+                headers: {Authorization: `Bearer ${user.token}`}
+            }).then((response) => {
+                setMedecin(response.data.message)
+            }).catch((error) => {
+                console.log(error)
+            })
+          
+        }
+        const handleChange = (e) =>{
+            setMedecin({ ...medecin, [e.target.name]: e.target.value})
+        }
+        console.log(medecin)
     return (
         <Page title="Mise a jour du medecin">
             <Container>
@@ -49,22 +82,26 @@ export default function UpdateMedecin() {
                                
                                  <TextField
                                     required
-                                    id="prenom"
-                                    name="prenom"
+                                    value={medecin.name}
+                                    id="name"
+                                    name="name"
                                     label="Nom du medecin"
                                     fullWidth
                                     margin="normal"
+                                    onChange={handleChange}
                                 />
                                 
                                
                                  
                                 <TextField
                                     required
-                                    id="date_naissance"
-                                    name="date_naissance"
-                                    label="date de naissance du medecin"
+                                    id="dateNaiss"
+                                    name="dateNaiss"
+                                    label="Date de naissance du medecin"
                                     fullWidth
                                     margin="normal"
+                                    value={medecin.dateNaiss}
+                                    onChange={handleChange}
                                 />
                                  <TextField
                                     required
@@ -73,6 +110,8 @@ export default function UpdateMedecin() {
                                     label="Sexe medecin"
                                     fullWidth
                                     margin="normal"
+                                    value={medecin.sexe}
+                                    onChange={handleChange}
                                 />
                                  <TextField
                                     required
@@ -81,6 +120,8 @@ export default function UpdateMedecin() {
                                     label="Description du medecin"
                                     fullWidth
                                     margin="normal"
+                                    value={medecin.description}
+                                    onChange={handleChange}
                                 />
                                 
                                 
@@ -90,9 +131,11 @@ export default function UpdateMedecin() {
                                     required
                                     id="email"
                                     name="email"
-                                    label="email de medecin"
+                                    label="Email de medecin"
                                     fullWidth
                                     type="email"
+                                    value={medecin.email}
+                                    onChange={handleChange}
                                     margin="normal"
                                 />
                                 <TextField
@@ -110,6 +153,8 @@ export default function UpdateMedecin() {
                                     label="Numero de telephone du medecin"
                                     fullWidth
                                     margin="normal"
+                                    value={medecin.numero}
+                                    onChange={handleChange}
                                 />
                                 <TextField
                                 required
@@ -118,6 +163,8 @@ export default function UpdateMedecin() {
                                 label="grade du medecin "
                                 fullWidth
                                 margin="normal"
+                                value={medecin.grade}
+                                onChange={handleChange}
                                 />
                             </Grid>
                             <Grid item md={12} px={1} py={2}>

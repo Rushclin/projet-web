@@ -1,4 +1,7 @@
+
+import { Add, ArrowBack, RestoreRounded } from "@mui/icons-material";
 import {
+    Alert,
     Button,
     Card,
     Container,
@@ -6,14 +9,73 @@ import {
     Stack,
     TextField,
     Typography,
-} from "@mui/material";
+}
+ from "@mui/material";
 import { Box } from "@mui/material";
 import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+import axios from "axios";
 import Page from "../../components/Page";
+import { useAuthContext } from "../../context/userContext";
 
 export default function CreerMedecin() {
-    const navigate = useNavigate();
+   const { user } = useAuthContext();
+   const [medecin, setMedecin] = useState({
+    dateNaiss: '', 
+        numero: '',
+        description: '', 
+        hospitalId: user.userId, 
+        name : '', 
+       grade: '',
+        sexe: '',
+   })
+
+   const [image,setImage] = useState({})
+   const handleImage = (e) =>{
+    setImage(e.target.files[0])
+   }
+   const [loading,setLoading] = useState(false)
+   const navigate = useNavigate();
+   const handleChange = (e) => {
+     setMedecin({ ...medecin, [e.target.name]: e.target.value});
+   }
+   console.log(medecin)
+   const handleReset = () => {
+    setMedecin({
+        dateNaiss: '', 
+        numero: '',
+        description: '', 
+        hospitalId: user.userId, 
+        name : '', 
+       grade: '',
+        sexe: '',
+
+    })
+   }
+
+   const handleSubmit = (event) => {
+    event.preventDefault()
+ 
+ //    On fait les verification ici
+    
+
+    const data = new FormData()
+
+    data.append("medecin", JSON.stringify(medecin))
+    data.append("image", image)
+
+    axios.post("https://hanniel-api.herokuapp.com/hospital/c/medecin", data, {
+        /* userId: user.userId,  */
+        headers: {Authorization: `Bearer ${user.token}`}
+    }).then((response) => {
+        console.log("La requete a marchee")
+    }).catch((error) => {
+        console.log(error)
+    })
+    console.log("On soummet le formulaire")
+}
     return (
         <Page title="Creation du medecin">
             <Container>
@@ -30,7 +92,7 @@ export default function CreerMedecin() {
                             navigate("/medecin");
                         }}
                     >
-                        Retour
+                        Retour sur la page d'accueil
                     </Button>
                 </Stack>
 
@@ -43,96 +105,142 @@ export default function CreerMedecin() {
                         </Typography>
                     </Box>
 
-                    <Box component="form">
+                    <Box >
+                    <ValidatorForm onSubmit={handleSubmit}>
                         <Grid container>
                             <Grid item md={6} px={1}>
                                
-                                 <TextField
+                                 <TextValidator
                                     required
-                                    id="prenom"
-                                    name="prenom"
+                                    id="name"
+                                    onChange={handleChange}
+                                    value={medecin.name}
+                                    name="name"
                                     label="Nom du medecin"
                                     fullWidth
                                     margin="normal"
+                                    validators={["required"]}
+                                    errorMessage={["cechamps est obligatoire"]}
                                 />
                                 
                                
                                  
-                                <TextField
+                                <TextValidator
                                     required
-                                    id="date_naissance"
-                                    name="date_naissance"
+                                    id="dateBegin"
+                                    name="dateBegin"
+                                    value={medecin.dateBegin}
+                                    onChange={handleChange}
                                     label="date de naissance du medecin"
                                     fullWidth
                                     margin="normal"
+                                    validators={["required"]}
+                                    errorMessage={["cechamps est obligatoire"]}
                                 />
-                                 <TextField
+                                 <TextValidator
                                     required
                                     id="sexe"
+                                    value={medecin.sexe}
+                                    onChange={handleChange}
                                     name="sexe"
                                     label="Sexe medecin"
                                     fullWidth
                                     margin="normal"
+                                    validators={["required"]}
+                                    errorMessage={["cechamps est obligatoire"]}
                                 />
-                                 <TextField
+                                 <TextValidator
                                     required
                                     id="description"
                                     name="description"
+                                    value={medecin.description}
+                                    onChange={handleChange}
                                     label="Description du medecin"
                                     fullWidth
                                     margin="normal"
+                                    validators={["required"]}
+                                    errorMessage={["cechamps est obligatoire"]}
                                 />
                                 
                                 
                             </Grid>
                             <Grid item md={6} px={1}>
-                            <TextField
-                                    required
-                                    id="email"
-                                    name="email"
-                                    label="email de medecin"
-                                    fullWidth
-                                    type="email"
-                                    margin="normal"
+                            <TextValidator
+                                   required
+                                   onChange={handleChange}
+                                   value={medecin.email}
+                                   id="email"
+                                   name="email"
+                                   label="Email du medein"
+                                   fullWidth
+                                   type="email"
+                                   margin="normal"
+                                   validators={["required", "isEmail"]}
+                                   errorMessages={[
+                                       "Ce champ est obligatoire",
+                                       "Email non valide"
+                                   ]}
                                 />
-                                <TextField
+                                <TextValidator
                                     required
                                     id="photo"
                                     name="photo"
                                     fullWidth
                                     type="file"
                                     margin="normal"
+                                    onChange={handleImage}
+                                    value={medecin.photo}
                                 />
-                                  <TextField
+                                  <TextValidator
                                     required
                                     id="numero"
                                     name="numero"
+                                    value={medecin.numero}
+                                    onChange={handleChange}
                                     label="Numero de telephone du medecin"
                                     fullWidth
                                     margin="normal"
+                                    validators={["required", "matchRegexp:^[0-9]{9,}"]}
+                                    errorMessages={[
+                                        "Ce champ est obligatoire",
+                                        "9 chiffres au minimum"
+                                    ]}
                                 />
-                                <TextField
+                                <TextValidator
                                 required
                                 id="grade"
                                 name="grade"
+                                value={medecin.grade}
+                                onChange={handleChange}
                                 label="grade du medecin "
                                 fullWidth
                                 margin="normal"
+                                validators={["required"]}
+                                errorMessage={["cechamps est obligatoire"]}
                                 />
                             </Grid>
                             <Grid item md={12} px={1} py={2}>
-                                <Button
-                                    variant="contained"
-                                    type="submit"
-                                    style={{ margin: "10px" }}
-                                >
-                                    Modifier
-                                </Button>
-                                <Button type="reset" variant="contained" color="error">
-                                    Annuler
-                                </Button>
+                            <Button
+                                        variant="contained"
+                                        type="submit"
+                                        startIcon={<Add />}
+                                        style={{ margin: "10px" }}
+                                        disabled={loading}
+                                    >
+                                        Sauvegarder
+                                    </Button>
+                                    <Button
+                                        type="reset"
+                                        variant="contained"
+                                        color="error"
+                                        startIcon={<RestoreRounded />}
+                                        onClick={handleReset}
+                                    >
+                                        Annuler
+                                    </Button>
                             </Grid>
                         </Grid>
+                        </ValidatorForm>
                     </Box>
                 </Card>
             </Container>
