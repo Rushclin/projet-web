@@ -1,8 +1,11 @@
 import { VaccinesOutlined } from "@mui/icons-material"
 import { Avatar, Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
+import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Page from "../../components/Page"
+import { useAuthContext } from "../../context/userContext"
+import axios from 'axios'
 
 const Copyright = (props) => {
     return (
@@ -21,14 +24,34 @@ const LoginPage = () => {
 
     //HOOKS 
     const navigate = useNavigate()
+    const [user, setUser] = useState({
+        email: "",
+        password: ""
+    })
+
+    const AuthContext = useAuthContext()
+
+
+
+    const handleChange = e => {
+        setUser((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        navigate("/dashboard")
-        const data = new FormData(e.currentTarget)
-        console.log({
-            email: data.get('email')
+        // const data = new FormData(e.currentTarget)
+        axios.post("https://hanniel-api.herokuapp.com/pharmacy/signIn", user).then((response) => {
+            if (response.status && response.status === 200) {
+                window.sessionStorage.setItem("user", JSON.stringify(response.data));
+                navigate("/dashboard");
+                AuthContext.update();
+            } else {
+                // Autre condition ici 
+            }
+        }).catch((error) => {
+            console.log(error)
         })
+
     }
 
     return (
@@ -72,6 +95,8 @@ const LoginPage = () => {
                                 required
                                 type="email"
                                 fullWidth
+                                value={user.email}
+                                onChange={handleChange}
                                 id="email"
                                 label="Entrez votre email"
                                 name="email"
@@ -84,6 +109,8 @@ const LoginPage = () => {
                                 required
                                 fullWidth
                                 id="password"
+                                value={user.password}
+                                onChange={handleChange}
                                 label="Entrez votre mot de passe"
                                 name="password"
                                 autoComplete="password"
@@ -98,6 +125,7 @@ const LoginPage = () => {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
+                                onClick={handleSubmit}
                             >
                                 SE CONNECTER
                             </Button>

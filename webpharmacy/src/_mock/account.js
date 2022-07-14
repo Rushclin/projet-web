@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------
 
 const account = {
-  displayName: "Takam Rushclin",
-  email: "takamrushclin@gmail.com",
-  photoURL: "/static/assets/images/PhotoGrid_Site_1647717549345.jpg",
+  displayName: "Lionnel Noumechi",
+  email: "lionnelnoumechi@gmail.com",
+  photoURL: "/static/assets/images/profil.jpeg",
 };
 
 export default account;

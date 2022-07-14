@@ -77,7 +77,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ px: 2.5, py: 3, display: "inline-flex" }}>
         {/* <Logo /> */}
         <Typography variant="h6" sx={{ color: "text.primary" }}>
-          ADMIN PHARMACIE
+           PHARMACIE
         </Typography>
       </Box>
 
