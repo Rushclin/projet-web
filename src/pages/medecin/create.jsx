@@ -72,7 +72,7 @@ export default function CreerMedecin() {
     data.append("medecin", JSON.stringify(medecin))
     data.append("image", image)
 
-    axios.post("https://hanniel-api.herokuapp.com/hospital/c/medecin/${id}", data, {
+    axios.post("https://hanniel-api.herokuapp.com/hospital/c/medecin", data, {
         /* userId: user.userId,  */
         headers: {Authorization: `Bearer ${user.token}`}
     }).then((response) => {
