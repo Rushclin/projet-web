@@ -117,8 +117,8 @@ export default function ListeMedecin() {
                     return (
                         <>
                         <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                          //  <Button size="small" variant='contained'>
-                                <Edit />
+                            <Button size="small" variant='contained' onClick={() => { navigate("/medecin/update")}}>
+                             <Edit />
                             </Button>
                             <Button size="small" variant='contained' color="error" onClick={() => handleDelete(medecin[dataIndex].id)}>
                                 <DeleteRounded />
