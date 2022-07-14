@@ -81,14 +81,7 @@ export default function ListeMedecin() {
             }
         },
 
-        {
-            name: "dateNaiss",
-            label: "Date Naissance",
-            options: {
-                filter: true,
-                sort: false,
-            }
-        },
+    
         {
             name: "description",
             label: "Description",
@@ -99,13 +92,14 @@ export default function ListeMedecin() {
         },
         
         {
-            name: "grade",
-            label: "Grage",
+            name: "specialite",
+            label: "Specialite",
             options:{
                 filter: true,
                 sort: true,
             }
         },
+       
         {
             name: "statut",
             label: "Statut",

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,FormControl,InputLabel,MenuItem} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import { useAuthContext } from "../../context/userContext";
@@ -29,24 +29,52 @@ export default function UpdateMedecin() {
        grade: '',
         sexe: '',
     })
-    useEffect(()=>{
-     putMedecin();
-    },[])
-         const putMedecin = () =>{
-            axios.put("https://hanniel-api.herokuapp.com/hospital/", data, {
-                /* userId: user.userId,  */
-                headers: {Authorization: `Bearer ${user.token}`}
-            }).then((response) => {
-                setMedecin(response.data.message)
-            }).catch((error) => {
-                console.log(error)
-            })
-          
-        }
-        const handleChange = (e) =>{
-            setMedecin({ ...medecin, [e.target.name]: e.target.value})
-        }
-        console.log(medecin)
+    const [image, setImage] = useState({})
+    const getMedecin = (e) => { 
+        axios.get("https://hanniel-api.herokuapp.com/hospital/g/medecin"+id, {
+            userId : user.userId,
+            headers: {Authorization: `Bearer ${user.token}`}
+        }).then((response) => {
+            setMedecin(response.data.message)
+        }).catch((error) => {
+            console.log(error)
+        })
+      }
+      const handleImage = (e) => {
+        setImage(e.target.files[0])
+    }
+    const handleChange = (e) =>{
+        setMedecin({ ...medecin, [e.target.name]: e.target.value})
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        updateMedecin()
+    }
+
+
+    const updateMedecin = () =>{
+        const data =new FormData()
+
+    data.append("medecin",JSON.stringify(medecin))
+        data.append("image",image)
+        axios.put(`https://hanniel-api.herokuapp.com/hospital/ ${id}`, data, {
+            userId: user.userId,  
+            headers: {Authorization: `Bearer ${user.token}`}
+        }).then((response) => {
+            console.log( "modifier les medecins")
+            navigate("/medecin/") 
+        }).catch((error) => {
+            console.log(error)
+        })
+      
+    }
+    console.log(medecin)
+    console.log(medecin)
+
+  
+      
+     
     return (
         <Page title="Mise a jour du medecin">
             <Container>
@@ -103,16 +131,20 @@ export default function UpdateMedecin() {
                                     value={medecin.dateNaiss}
                                     onChange={handleChange}
                                 />
-                                 <TextField
-                                    required
-                                    id="sexe"
-                                    name="sexe"
-                                    label="Sexe medecin"
-                                    fullWidth
-                                    margin="normal"
-                                    value={medecin.sexe}
+                                         <FormControl fullWidth style={{ marginBottom:"15px"}}>
+                                        <InputLabel name="demo1">Statut</InputLabel>
+                                        <select>
+                                            labelId="demo1"
+                                    id="demo1"
+                                    name="statut"
+                                   label="Statut"
+                                    value={medecin.statut}
                                     onChange={handleChange}
-                                />
+                                    <MenuItem value={1}>Masculin</MenuItem>
+                                    <MenuItem value={1}>Feminin</MenuItem>
+                                    </select>
+                                    </FormControl>
+                                
                                  <TextField
                                     required
                                     id="description"
@@ -123,7 +155,18 @@ export default function UpdateMedecin() {
                                     value={medecin.description}
                                     onChange={handleChange}
                                 />
-                                
+                                 <TextField
+                                    required
+                                    id="specialite"
+                                    name="specialite"
+                                    value={medecin.specialite}
+                                    onChange={handleChange}
+                                    label="Specialité du medecin"
+                                    fullWidth
+                                    margin="normal"
+                                    validators={["required"]}
+                                    errorMessage={["cechamps est obligatoire"]}
+                                />
                                 
                             </Grid>
                             <Grid item md={6} px={1}>
@@ -156,16 +199,7 @@ export default function UpdateMedecin() {
                                     value={medecin.numero}
                                     onChange={handleChange}
                                 />
-                                <TextField
-                                required
-                                id="grade"
-                                name="grade"
-                                label="grade du medecin "
-                                fullWidth
-                                margin="normal"
-                                value={medecin.grade}
-                                onChange={handleChange}
-                                />
+                            
                             </Grid>
                             <Grid item md={12} px={1} py={2}>
                                 <Button

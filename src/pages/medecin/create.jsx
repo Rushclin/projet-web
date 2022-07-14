@@ -5,7 +5,11 @@ import {
     Button,
     Card,
     Container,
+    FormControl,
     Grid,
+    InputLabel,
+    MenuItem,
+    Select,
     Stack,
     TextField,
     Typography,
@@ -23,13 +27,13 @@ import { useAuthContext } from "../../context/userContext";
 export default function CreerMedecin() {
    const { user } = useAuthContext();
    const [medecin, setMedecin] = useState({
-    dateNaiss: '', 
+    dateBegin: '', 
         numero: '',
         description: '', 
         hospitalId: user.userId, 
         name : '', 
-        grade: '',
         sexe: '',
+        specialite:'',
         password:'123456',
    })
 
@@ -45,13 +49,13 @@ export default function CreerMedecin() {
    console.log(medecin)
    const handleReset = () => {
     setMedecin({
-        dateNaiss: '', 
+        dateBegin: '', 
         numero: '',
         description: '', 
         hospitalId: user.userId, 
-        name : '', 
-        grade: '',
+        name : '',
         sexe: '',
+        specialite:'',
         password:'123456',
 
     })
@@ -68,7 +72,7 @@ export default function CreerMedecin() {
     data.append("medecin", JSON.stringify(medecin))
     data.append("image", image)
 
-    axios.post("https://hanniel-api.herokuapp.com/hospital/c/medecin", data, {
+    axios.post("https://hanniel-api.herokuapp.com/hospital/c/medecin/${id}", data, {
         /* userId: user.userId,  */
         headers: {Authorization: `Bearer ${user.token}`}
     }).then((response) => {
@@ -139,18 +143,7 @@ export default function CreerMedecin() {
                                     margin="normal"
                                     type="date"
                                    />
-                                 <TextValidator
-                                    required
-                                    id="sexe"
-                                    value={medecin.sexe}
-                                    onChange={handleChange}
-                                    name="sexe"
-                                    label="Sexe medecin"
-                                    fullWidth
-                                    margin="normal"
-                                    validators={["required"]}
-                                    errorMessage={["cechamps est obligatoire"]}
-                                />
+                            
                                  <TextValidator
                                     required
                                     id="description"
@@ -163,8 +156,19 @@ export default function CreerMedecin() {
                                     validators={["required"]}
                                     errorMessage={["cechamps est obligatoire"]}
                                 />
-                                
-                                
+                                  <TextValidator
+                                    required
+                                    id="specialite"
+                                    name="specialite"
+                                    value={medecin.specialite}
+                                    onChange={handleChange}
+                                    label="Specialité du medecin"
+                                    fullWidth
+                                    margin="normal"
+                                    validators={["required"]}
+                                    errorMessage={["cechamps est obligatoire"]}
+                                />
+                                   
                             </Grid>
                             <Grid item md={6} px={1}>
                             <TextValidator
@@ -208,18 +212,20 @@ export default function CreerMedecin() {
                                         "9 chiffres au minimum"
                                     ]}
                                 />
-                                <TextValidator
-                                required
-                                id="grade"
-                                name="grade"
-                                value={medecin.grade}
-                                onChange={handleChange}
-                                label="grade du medecin "
-                                fullWidth
-                                margin="normal"
-                                validators={["required"]}
-                                errorMessage={["cechamps est obligatoire"]}
-                                />
+                               <FormControl fullWidth style={{ marginBottom:"50px"}}>
+                                         <InputLabel name="sexe">Sexe</InputLabel>
+                                         <Select
+                                         labelId="sexe"
+                                         label="Sexe"
+                                         name="sexe"
+                                         value={medecin.sexe}
+                                         onChange={handleChange}>
+                                            <MenuItem value={1}>Masculin</MenuItem>
+                                            <MenuItem value={0}>Feminin</MenuItem>
+                                         </Select>
+
+
+                                    </FormControl>
                             </Grid>
                             <Grid item md={12} px={1} py={2}>
                             <Button

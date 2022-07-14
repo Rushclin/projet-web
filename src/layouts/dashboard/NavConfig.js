@@ -11,11 +11,11 @@ const navConfig = [
     path: "/dashboard",
     icon: getIcon("eva:pie-chart-2-fill"),
   },
-  {
+  /*{
     title: "Mes medicaments",
     path: "/medicaments",
     icon: getIcon("fontisto:drug-pack"),
-  },
+  },*/
   {
     title: "Campagnes",
     path: "/campagne",

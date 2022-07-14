@@ -22,9 +22,9 @@ export default function Router() {
       /* path: "/", */
       element: <DashboardLayout />,
       children: [
-        { path: "dashboard", element: <DashboardApp /> },
-        { path: "medicaments", element: <Medicaments /> },
-        { path: "medicaments/create", element: <NouveauMedicament /> },
+        //{ path: "dashboard", element: <DashboardApp /> },
+        //{ path: "medicaments", element: <Medicaments /> },
+       // { path: "medicaments/create", element: <NouveauMedicament /> },
         // Hopital
         { path: "campagne", element: <ListeCampagne /> },
         { path: "campagne/create", element: <CreerCampagne /> },
